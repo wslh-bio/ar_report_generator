@@ -1,10 +1,89 @@
 ---
-title: "ar_report_generator"
-output: html_document
+title: "PUBLIC HEALTH WHOLE GENOME SEQUENCING ANALYSIS REPORT"
+output:
+  html_document:
+    theme: paper
 ---
 
+```{css, echo=FALSE}
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;400;500;700&family=Roboto:wght@100;300;400;500;700&display=swap');
+body {
+  font-family: 'Noto Sans JP', Arial, Helvetica, sans-serif;
+  font-size: 2rem;
+  background-color: #283747;
+}
+
+.title {
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 50px;
+  margin-top: 145px;
+  font-size: 6rem !important;
+}
+
+.subtitle {
+  font-weight: 300;
+  text-align: center;
+  font-size: 3rem !important;
+}
+
+h1, h2 {
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+  margin: 0px;
+  font-weight: 700;
+}
+
+h3, h4, h5, h6 {
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+  margin: 10px;
+  font-weight: 500;
+}
+
+.main-container{
+  width: 85%;
+  max-width: none;
+  background-color: #FFF;
+}
+.section {
+  margin-bottom: 50px;
+}
+h1 { font-size: 3.4rem;}
+h2 { font-size: 3rem; }
+h3 { font-size: 2.6rem; }
+h4 { font-size: 2.2rem; }
+h5 { font-size: 2rem; }
+
+h2:before,
+h2::after {
+    display: inline-block;
+    content: "";
+    border-top: .3rem solid black;
+    width: 4rem;
+    margin: 0 1rem;
+    transform: translateY(-1rem);
+}
+
+.titlePanel {
+  background-color: #FFF;
+  position:absolute;
+  top:0px;
+  height: 135px;
+  width: 100%;
+  left:0px;
+}
+```
+
+<div class ="titlePanel">
+```{r, echo=FALSE, fig.align='left',out.height='100px',out.extra="style='margin:20px'"}
+knitr::include_graphics("ar_logo.png")
+```
+</div>
 
 ```{r setup, include=FALSE}
+
+#if (!requireNamespace("BiocManager", quietly = TRUE))
+#  install.packages("BiocManager")
+#BiocManager::install("ggtree")
 
 library(ggplot2)
 library(plotly)
@@ -16,12 +95,11 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```
 
-# PUBLIC HEALTH WHOLE GENOME SEQUENCING ANALYSIS REPORT
+<div class="subtitle">
+NAME OF THE ORGANISM / GENES OR OUTBREAK ANALYSIS REPORT
+</div>
 
-### NAME OF THE ORGANISM / GENES OR OUTBREAK ANALYSIS REPORT
-### ANTIMICROBIAL RESISTANCE REPORT FOR NAME OF THE ORGANISM
-### OUTBREAK REPORT FOR NAME OF THE ORGANISM
-
+<center>
 ```{r intro}
 
 # create table
@@ -31,27 +109,35 @@ colnames(df) <- c("REPORT DATE","PROJECT NAME","PREPARED BY")
 # plot table
 pander(df)
 ```
+</center>
 
-### RESISTANCE MECHANISMS
+## RESISTANCE MECHANISMS
 
 Include one sentence on the outcome of the investigation
-
+<center>
 ```{r ar}
 
 # create table
-df <- data.frame(lab="LAB ID",doc="DOC",name="Name")
+df <- data.frame('Lab ID'='Laboratory ID',
+  'Isolate collection date'='Date/Of/Collection',
+  'Local ID'='Local ID',
+  'Species ID'='Species ID',
+  'Specimen Source'= 'Specimen Source',
+  'MLST'= 'MLST Result',
+  'Resistance Genes'='Genes Detected',
+  'Notes'='Extra Comments')
 
 # plot table
 pander(df)
 
 ```
-
-### RELATEDNESS (FOR OUTBREAK REPORTS)
+</center>
+## RELATEDNESS (FOR OUTBREAK REPORTS)
 
 Include: SNPs number, mutations found, SNPs heat map, dendogram, tree, cluster tables (NY report)
 
-#### HEATMAP
-
+## HEATMAP
+<center>
 ```{r heatmap}
 
 # create matrix
@@ -66,9 +152,10 @@ fig <- plot_ly(
 fig
 
 ```
+</center>
 
-
-#### TREE
+## TREE
+<center>
 ```{r tree}
 
 # create tree
@@ -95,12 +182,12 @@ p2 <- p1 +
 plotly::ggplotly(p2)
 
 ```
+</center>
+## ADDITIONAL ANALYSES
 
-### ADDITIONAL ANALYSES
+## METHODS
 
-### METHODS
-
-### DISCLAIMERS
+## DISCLAIMERS
  
 Ideas: 
 1. There is no set number of SNPs that classifies an outbreak. Incorporation of clinical and epidemiological data with genotypic results is recommended.
