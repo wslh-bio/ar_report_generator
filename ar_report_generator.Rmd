@@ -3,26 +3,105 @@ title: "ar_report_generator"
 output: html_document
 ---
 
+
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+library(plotly)
+library(pander)
+library(ape)
+library(ggtree)
+
+knitr::opts_chunk$set(echo = FALSE)
+
 ```
 
-## R Markdown
+# PUBLIC HEALTH WHOLE GENOME SEQUENCING ANALYSIS REPORT
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+### NAME OF THE ORGANISM / GENES OR OUTBREAK ANALYSIS REPORT
+### ANTIMICROBIAL RESISTANCE REPORT FOR NAME OF THE ORGANISM
+### OUTBREAK REPORT FOR NAME OF THE ORGANISM
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+```{r intro}
 
-```{r cars}
-summary(cars)
+# create table
+df <- data.frame(date="Date",project="Project",name="Name")
+colnames(df) <- c("REPORT DATE","PROJECT NAME","PREPARED BY")
+
+# plot table
+pander(df)
 ```
 
-## Including Plots
+### RESISTANCE MECHANISMS
 
-You can also embed plots, for example:
+Include one sentence on the outcome of the investigation
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r ar}
+
+# create table
+df <- data.frame(lab="LAB ID",doc="DOC",name="Name")
+
+# plot table
+pander(df)
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+### RELATEDNESS (FOR OUTBREAK REPORTS)
+
+Include: SNPs number, mutations found, SNPs heat map, dendogram, tree, cluster tables (NY report)
+
+#### HEATMAP
+
+```{r heatmap}
+
+# create matrix
+m <- matrix(rnorm(9), nrow = 3, ncol = 3)
+
+fig <- plot_ly(
+    x = c("a", "b", "c"), y = c("d", "e", "f"),
+    z = m, type = "heatmap"
+)
+
+# plot heatmap
+fig
+
+```
+
+
+#### TREE
+```{r tree}
+
+# create tree
+n_samples <- 20
+n_grp <- 4
+tree <- ape::rtree(n = n_samples)
+
+# metadata
+id <- tree$tip.label
+set.seed(42)
+grp <- sample(LETTERS[1:n_grp], size = n_samples, replace = T)
+dat <- tibble::tibble(id = id,
+                      grp = grp)
+# plot tree
+p1 <- ggtree(tree)
+metat <- p1$data %>%
+  dplyr::inner_join(dat, c('label' = 'id'))
+p2 <- p1 +
+  geom_point(data = metat,
+             aes(x = x,
+                 y = y,
+                 colour = grp,
+                 label = id))
+plotly::ggplotly(p2)
+
+```
+
+### ADDITIONAL ANALYSES
+
+### METHODS
+
+### DISCLAIMERS
+ 
+Ideas: 
+1. There is no set number of SNPs that classifies an outbreak. Incorporation of clinical and epidemiological data with genotypic results is recommended.
+2. Identification of resistance genes has not been compared with phenotypic susceptibility testing; therefore, correlation has not been determined.
