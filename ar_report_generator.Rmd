@@ -93,7 +93,7 @@ library(kableExtra)
 library(ape)
 library(ggtree)
 
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE,warning=FALSE)
 
 ```
 
