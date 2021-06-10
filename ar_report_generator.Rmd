@@ -89,6 +89,7 @@ knitr::include_graphics("ar_logo.png")
 library(ggplot2)
 library(plotly)
 library(pander)
+library(kableExtra)
 library(ape)
 library(ggtree)
 
@@ -131,9 +132,10 @@ df <- data.frame('Lab ID'='Laboratory ID',
   'Notes'='Extra Comments')
 
 # plot table
-panderOptions("table.split.table", Inf)
-pander(df)
-
+kbl(df) %>%
+  kable_styling(bootstrap_options = c("hover", "condensed", "responsive"), 
+  fixed_thead = T, 
+  font_size = 14)
 ```
 </center>
 ## RELATEDNESS (FOR OUTBREAK REPORTS)
