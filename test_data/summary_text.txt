@@ -1,0 +1,3 @@
+This report outlines the relationship between a set of samples collected at a facility described by the outbreak ID: 1337. An set of external OXA-24 samples were also included to provide context to the outbreak.
+
+We found all the outbreak samples were related including an evironmental sample.

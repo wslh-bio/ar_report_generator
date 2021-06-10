@@ -92,47 +92,40 @@ library(pander)
 library(kableExtra)
 library(ape)
 library(ggtree)
+library(heatmaply)
 
 knitr::opts_chunk$set(echo = FALSE,warning=FALSE)
 
 ```
 
 <div class="subtitle">
-NAME OF THE ORGANISM / GENES OR OUTBREAK ANALYSIS REPORT
+`r subHeaderText`
 </div>
 
 <center>
 ```{r intro}
 
 # create table
-df <- data.frame(date="Date",project="Project",name="Name")
-colnames(df) <- c("REPORT DATE","PROJECT NAME","PREPARED BY")
+colnames(headerDF) <- c("REPORT DATE","PROJECT NAME","PREPARED BY")
 
 # plot table
-pander(df)
+pander(headerDF)
 ```
 </center>
 
 ## SUMMARY
 
-Include one sentence on the outcome of the investigation
+`r summaryTEXT`
 
 ## SAMPLES
 <center>
 ```{r ar}
 
 # create table
-df <- data.frame('Lab ID'='Laboratory ID',
-  'Isolate collection date'='Date/Of/Collection',
-  'Local ID'='Local ID',
-  'Species ID'='Species ID',
-  'Specimen Source'= 'Specimen Source',
-  'MLST'= 'MLST Result',
-  'Resistance Genes'='Genes Detected',
-  'Notes'='Extra Comments')
-
+colnames(sampleDF) <- c("Lab ID", "Isolate Collection Date", "Local ID", "Species ID", "Specimen Source", 
+                        "MLST", "Resistance Genes", "Comments")
 # plot table
-kbl(df) %>%
+kbl(sampleDF) %>%
   kable_styling(bootstrap_options = c("hover", "condensed", "responsive"), 
   fixed_thead = T, 
   font_size = 14)
@@ -143,36 +136,25 @@ kbl(df) %>%
 ### HEATMAP
 <center>
 ```{r heatmap}
-
-# create matrix
-m <- matrix(rnorm(9), nrow = 3, ncol = 3)
-
-fig <- plot_ly(
-    x = c("a", "b", "c"), y = c("d", "e", "f"),
-    z = m, type = "heatmap"
-)
-
-# plot heatmap
-fig
-
+rownames(snpData) <- snpData$X
+snpData <- snpData [,-1]
+heatmaply(snpData,
+          #cellnote=snpData,
+          show_dendrogram = c(FALSE, TRUE),
+          dist_method="euclidean")
 ```
 </center>
 
 ### TREE
 <center>
 ```{r tree}
-
-# create tree
-n_samples <- 20
-n_grp <- 4
-tree <- ape::rtree(n = n_samples)
+tree <- ape::read.tree(treepath)
 
 # metadata
 id <- tree$tip.label
 set.seed(42)
-grp <- sample(LETTERS[1:n_grp], size = n_samples, replace = T)
-dat <- tibble::tibble(id = id,
-                      grp = grp)
+#grp <- sample(LETTERS[1:n_grp], size = n_samples, replace = T)
+dat <- tibble::tibble(id = id)
 # plot tree
 p1 <- ggtree(tree)
 metat <- p1$data %>%
@@ -182,7 +164,7 @@ p2 <- p1 +
   geom_point(data = metat,
              aes(x = x,
                  y = y,
-                 colour = grp,
+                 #colour = grp,
                  label = id, text = paste0(id)))
       
 ggplotly(p2, tooltip = "text")
