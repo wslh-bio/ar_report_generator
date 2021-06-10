@@ -177,14 +177,16 @@ dat <- tibble::tibble(id = id,
 p1 <- ggtree(tree)
 metat <- p1$data %>%
   dplyr::inner_join(dat, c('label' = 'id'))
+
 p2 <- p1 +
   geom_point(data = metat,
              aes(x = x,
                  y = y,
                  colour = grp,
-                 label = id))
-plotly::ggplotly(p2)
-
+                 label = id, text = paste0(id)))
+      
+ggplotly(p2, tooltip = "text")
+      
 ```
 </center>
 
