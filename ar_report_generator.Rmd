@@ -131,6 +131,7 @@ df <- data.frame('Lab ID'='Laboratory ID',
   'Notes'='Extra Comments')
 
 # plot table
+panderOptions("table.split.table", Inf) 
 pander(df)
 
 ```
