@@ -58,7 +58,7 @@ h2:before,
 h2::after {
     display: inline-block;
     content: "";
-    border-top: .3rem solid black;
+    border-top: .3rem solid;
     width: 4rem;
     margin: 0 1rem;
     transform: translateY(-1rem);
