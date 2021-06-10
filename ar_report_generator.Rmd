@@ -131,7 +131,7 @@ df <- data.frame('Lab ID'='Laboratory ID',
   'Notes'='Extra Comments')
 
 # plot table
-panderOptions("table.split.table", Inf) 
+panderOptions("table.split.table", Inf)
 pander(df)
 
 ```
@@ -186,9 +186,11 @@ plotly::ggplotly(p2)
 ```
 </center>
 
+## AR GENE SUMMARY (FOR AR REPORTS)
+
 ## ADDITIONAL ANALYSES
 
-* AR Gene Table
+* Comprehensive AR Gene Table
 * Virulence Factors
 * Cluster Table
 
