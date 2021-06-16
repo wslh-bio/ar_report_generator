@@ -1,0 +1,29 @@
+# ar_report_generator configuration file
+
+### report text ###
+sub.title: "Antimicrobial Resistance Outbreak Report"
+summary.paragraph: |
+  This report outlines the relationship between a set of samples collected at a facility described by the outbreak ID: 1337. An set of external OXA-24 samples were also included to provide context to the outbreak.
+  We found all the outbreak samples were related including an evironmental sample.
+ar_gene_summary.text: |
+methods.text: |
+  The figures shown here were generated using sequence data processed with the BEST data analysis pipeline, Greatest Pipeline v1.0.0 (https://github.com). SNPs were called using the Center for Single Nuclelotide Variants (CSNV) SNP pipeline. If you have questions about this report please contact someone who knows something at someone@somewhere.over.rainbow.
+disclaimer.text: |
+  The information included in this report should be used to support infection prevention measures. This report should not be used to guide treatment decisions, nor should it be included in the patient record.
+  Whole-genome sequencing analysis is a rapidly evolving technology. Whole-genome sequencing and single nucleotide variant analysis will continue to be adjusted and refined over time due to the varied nature of bacterial genomes, limitations on available reference genomes and continual assessment of the inclusion of mobile genetic elements in this analysis. These results represent the most advanced method currently available for genome comparisons.
+
+# note: the follow text includes methodology included in the report generation
+heatmap.text: |
+tree.text: |
+
+### report methodology params ###
+
+# heatmap distance metric, must be one of the following: "euclidean", "maximum", "manhattan", "canberra", "binary" or "minkowski"
+heat.dist.method: 'euclidean'
+
+# tree rooting method, must be one of the following: 'midpoint', 'unrooted', or a sample id
+root.method: 'midpoint'
+
+# show tree bootstrap (TRUE/FALSE) and threshold for displying values
+show.bootstrap: FALSE
+bootstrap.threshold: 80
