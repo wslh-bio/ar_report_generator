@@ -66,7 +66,14 @@ if(!is.na(argv$tree)){
 
 ## get optional ar-summary
 if(!is.na(argv$artable)){
-  ar_summary <- argv$artable
+  if(grepl(".tsv", argv$artable)){
+    ar_summary <- read.csv2(argv$artable,sep='\t')
+  } else if(grepl(".csv", argv$artable)) {
+    ar_summary <- read.csv2(argv$artable,sep=',')
+  } else {
+    print('AR data must be in csv/tsv format.')
+    quit(save="no", status=1)
+  }
 }
 
 rmarkdown::render("ar_report_generator.Rmd",output_file=paste0(Sys.Date(),'.ar-report.html'))

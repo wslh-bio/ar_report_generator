@@ -6,4 +6,5 @@
 test_data/samples.csv \
 ar_report_config.yaml \
 --snpmatrix test_data/snp_distance_matrix.tsv \
---tree test_data/core_genome.tree
+--tree test_data/core_genome.tree \
+--artable test_data/ar_predictions.tsv

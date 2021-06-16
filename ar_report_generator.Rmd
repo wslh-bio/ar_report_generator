@@ -120,7 +120,7 @@ pander(headerDF)
 
 ## SAMPLES
 <center>
-```{r ar}
+```{r samples}
 
 # create table
 colnames(sampleDF) <- c("Lab ID", "Isolate Collection Date", "Local ID", "Species ID", "Specimen Source",
@@ -198,8 +198,8 @@ if(exists('treepath')){
                    y = y,
                    colour = grp,
                    label = id, text = paste0(id)),show.legend = FALSE)
-    
-  
+
+
   if(config$show.bootstrap){
      #filter bootstrap values
      d <- ggtree_plot$data
@@ -216,6 +216,17 @@ if(exists('treepath')){
 `r if(exists('treepath')){"***"}`
 
 `r if(exists('ar_summary')){"## AR GENE SUMMARY"}`
+<center>
+```{r ar_table}
+if(exists('ar_summary')){
+  # plot table
+  kbl(ar_summary) %>%
+    kable_styling(bootstrap_options = c("hover", "condensed", "responsive"),
+    fixed_thead = T,
+    font_size = 14)
+}
+```
+</center>
 
 ## ADDITIONAL ANALYSES
 
