@@ -1,8 +1,8 @@
-SampleID,DOC,LocalID,SpeciesID,SpecimenSource,MLST,ResistanceGenes,Notes
-S01,06/02/2049,WGS3213,Acinetobacter baumannii ,Skin,PubMLST ST406 (Pasteur),blaOXA-24,
-S02,06/18/2049,WGS3214,Acinetobacter baumannii ,Skin,PubMLST ST2 (Pasteur),blaOXA-72,Outbreak ID: 1337
-S03,05/38/2049,WGS3215,Acinetobacter baumannii ,Skin,PubMLST ST2 (Pasteur),blaOXA-72,Outbreak ID: 1337
-S04,05/36/2049,WGS3216,Acinetobacter baumannii ,Blood,PubMLST ST406 (Pasteur),blaOXA-24,
-S05,06/13/2049,WGS3217,Acinetobacter baumannii ,Skin,PubMLST ST406 (Pasteur),blaOXA-24,
-S06,06/15/2049,WGS3218,Acinetobacter baumannii ,Skin,PubMLST ST2 (Pasteur),blaOXA-72,Outbreak ID: 1337
-S07,05/25/2049,WGS3219,Acinetobacter baumannii ,Floor Drain,PubMLST ST2 (Pasteur),blaOXA-72,Environmental Sample obtained from outbreak site.
+SampleID,DOC,LocalID,SpeciesID,SpecimenSource,MLST,ResistanceGenes,Notes,TreeGroup
+S01,06/02/2049,WGS3213,Acinetobacter baumannii ,Skin,PubMLST ST406 (Pasteur),blaOXA-24,,OXA-24
+S02,06/18/2049,WGS3214,Acinetobacter baumannii ,Skin,PubMLST ST2 (Pasteur),blaOXA-72,Outbreak ID: 1337,OXA-72
+S03,05/38/2049,WGS3215,Acinetobacter baumannii ,Skin,PubMLST ST2 (Pasteur),blaOXA-72,Outbreak ID: 1337,OXA-72
+S04,05/36/2049,WGS3216,Acinetobacter baumannii ,Blood,PubMLST ST406 (Pasteur),blaOXA-24,,OXA-24
+S05,06/13/2049,WGS3217,Acinetobacter baumannii ,Skin,PubMLST ST406 (Pasteur),blaOXA-24,,OXA-24
+S06,06/15/2049,WGS3218,Acinetobacter baumannii ,Skin,PubMLST ST2 (Pasteur),blaOXA-72,Outbreak ID: 1337,OXA-72
+S07,05/25/2049,WGS3219,Acinetobacter baumannii ,Floor Drain,PubMLST ST2 (Pasteur),blaOXA-72,Environmental Sample obtained from outbreak site.,OXA-72

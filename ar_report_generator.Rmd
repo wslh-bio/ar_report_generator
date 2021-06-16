@@ -93,8 +93,9 @@ library(kableExtra)
 library(ape)
 library(ggtree)
 library(heatmaply)
+library(phytools)
 
-knitr::opts_chunk$set(echo = FALSE,warning=FALSE)
+knitr::opts_chunk$set(echo = FALSE,warning=FALSE,message=FALSE)
 
 ```
 
@@ -122,57 +123,99 @@ pander(headerDF)
 ```{r ar}
 
 # create table
-colnames(sampleDF) <- c("Lab ID", "Isolate Collection Date", "Local ID", "Species ID", "Specimen Source", 
-                        "MLST", "Resistance Genes", "Comments")
+colnames(sampleDF) <- c("Lab ID", "Isolate Collection Date", "Local ID", "Species ID", "Specimen Source",
+                        "MLST", "Resistance Genes", "Comments","TreeGroup")
 # plot table
-kbl(sampleDF) %>%
-  kable_styling(bootstrap_options = c("hover", "condensed", "responsive"), 
-  fixed_thead = T, 
+kbl(sampleDF[,1:8]) %>%
+  kable_styling(bootstrap_options = c("hover", "condensed", "responsive"),
+  fixed_thead = T,
   font_size = 14)
 ```
 </center>
-## RELATEDNESS (FOR OUTBREAK REPORTS)
+`r if(exists('snpData') | exists('treepath')){"## RELATEDNESS"}`
 
-### HEATMAP
+`r if(exists('snpData')){"### HEATMAP"}`
 <center>
 ```{r heatmap}
-rownames(snpData) <- snpData$X
-snpData <- snpData [,-1]
-heatmaply(snpData,
-          #cellnote=snpData,
-          show_dendrogram = c(FALSE, TRUE),
-          dist_method="euclidean")
+if(exists('snpData')){
+  rownames(snpData) <- snpData$X
+  snpData <- snpData [,-1]
+  heatmaply(snpData,
+            #cellnote=snpData,
+            colors = viridis(n = 256, alpha = 1, begin = 1, end = 0, option = "viridis"),
+            show_dendrogram = c(FALSE, FALSE),
+            dist_method=config$heat.dist.method)
+}
 ```
 </center>
+`r if(exists('snpData')){"***"}`
 
-### TREE
+`r if(exists('treepath')){"### TREE"}`
 <center>
-```{r tree}
-tree <- ape::read.tree(treepath)
+```{r tree, message=FALSE}
+if(exists('treepath')){
+  set.seed(42)
+  tree <- ape::read.tree(treepath)
 
-# metadata
-id <- tree$tip.label
-set.seed(42)
-#grp <- sample(LETTERS[1:n_grp], size = n_samples, replace = T)
-dat <- tibble::tibble(id = id)
-# plot tree
-p1 <- ggtree(tree)
-metat <- p1$data %>%
-  dplyr::inner_join(dat, c('label' = 'id'))
+  if(config$root.method == 'midpoint'){
+    tree <- midpoint.root(tree)
+  }
+  else if(config$root.method == 'unrooted'){
+    tree <- tree
+  }
+  else {
+    node <- match(config$root.method, tree$tip.label)
+    if(is.na(node)){
+      message('Root sample ID not found')
+      quit(save="no", status=1)
+    } else {
+      tree <- reroot(tree,node)
+    }
+  }
 
-p2 <- p1 +
-  geom_point(data = metat,
-             aes(x = x,
-                 y = y,
-                 #colour = grp,
-                 label = id, text = paste0(id)))
-      
-ggplotly(p2, tooltip = "text")
-      
+  # metadata
+  id <- tree$tip.label
+
+  # group samples if we have a grouping catagory
+  if(any(!is.na(sampleDF$TreeGroup))){
+    #reorder sampleDF
+    orderedDF <- sampleDF[match(id,sampleDF$'Lab ID'),]
+    grp <- orderedDF$TreeGroup
+  }
+  else {
+    grp <- NULL
+  }
+
+  dat <- tibble::tibble(id = id)
+  # plot tree
+  ggtree_plot <- ggtree(tree)
+  metat <- ggtree_plot$data %>%
+    dplyr::inner_join(dat, c('label' = 'id'))
+
+  ggtree_plot <- ggtree_plot +
+    geom_point(data = metat,
+               aes(x = x,
+                   y = y,
+                   colour = grp,
+                   label = id, text = paste0(id)),show.legend = FALSE)
+    
+  
+  if(config$show.bootstrap){
+     #filter bootstrap values
+     d <- ggtree_plot$data
+     bs <- d[!d$isTip,]
+     bs$label <- as.numeric(bs$label)
+     bs <- bs[bs$label > config$bootstrap.threshold,]
+     ggtree_plot <- ggtree_plot + geom_text(data=bs,aes(label=label,),position = position_dodge2(width = 0.001))
+  }
+
+  ggplotly(ggtree_plot, tooltip = "text")
+}
 ```
 </center>
+`r if(exists('treepath')){"***"}`
 
-## AR GENE SUMMARY (FOR AR REPORTS)
+`r if(exists('ar_summary')){"## AR GENE SUMMARY"}`
 
 ## ADDITIONAL ANALYSES
 
@@ -181,9 +224,6 @@ ggplotly(p2, tooltip = "text")
 * Cluster Table
 
 ## METHODS
-
-## DISCLAIMERS
- 
-Ideas: 
-1. There is no set number of SNPs that classifies an outbreak. Incorporation of clinical and epidemiological data with genotypic results is recommended.
-2. Identification of resistance genes has not been compared with phenotypic susceptibility testing; therefore, correlation has not been determined.
+`r methodsTEXT`
+## DISCLAIMER
+`r disclaimerTEXT`

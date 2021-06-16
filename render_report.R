@@ -2,6 +2,7 @@
 
 library(rmarkdown)
 library(argparser)
+library(yaml)
 
 # Get command line arguments
 parser <- arg_parser("Automated AR Report Builder")
@@ -9,8 +10,8 @@ parser <- arg_parser("Automated AR Report Builder")
 #position args
 parser <- add_argument(parser, "projectname", help="set name of project")
 parser <- add_argument(parser, "username", help="name of report preparer")
-parser <- add_argument(parser, "summary_text", help="text file with summary text")
 parser <- add_argument(parser, "sampletable", help="csv/tsv of sample information")
+parser <- add_argument(parser, "config", help="report configuration file")
 
 #optional args
 parser <- add_argument(parser, "--date", default=Sys.Date(), help="set date of report, default: current date")
@@ -21,22 +22,19 @@ parser <- add_argument(parser, "--additionaldatatables", help="", nargs=Inf)
 
 argv <- parse_args(parser)
 
-# read inputs
+# read yaml file
+config <- read_yaml(argv$config)
 
 ## set header text
-if("snpmatrix" %in% names(argv) | "tree" %in% names(argv)  & "artable" %in% names(argv)) {
-  subHeaderText = "Antimicrobial Resistance Outbreak Report"
-} else if ("snpmatrix" %in% names(argv) | "tree" %in% names(argv)  & !"artable" %in% names(argv)){
-  subHeaderText = "Outbreak Report"
-} else (
-  subHeaderText = "Antimicrobial Resistance Report"
-)
-
+subHeaderText = config$sub.title
 ## get header table
 headerDF <- data.frame(date=argv$date,project=argv$projectname,name=argv$username)
-
 ## get summary text
-summaryTEXT <- paste(readLines(argv$summary_text), collapse="\n")
+summaryTEXT <- config$summary.paragraph
+## get disclaimer text
+disclaimerTEXT <- config$disclaimer.text
+## get methods text
+methodsTEXT <- config$methods.text
 
 ## get sample table
 if(grepl(".tsv", argv$sampletable)){
@@ -49,7 +47,8 @@ if(grepl(".tsv", argv$sampletable)){
 }
 
 ## get optional heatmap
-if("snpmatrix" %in% names(argv)){
+print(argv$snpmatrix)
+if(!is.na(argv$snpmatrix)){
   if(grepl(".tsv", argv$snpmatrix)){
     snpData <- read.csv2(argv$snpmatrix,sep='\t')
   } else if(grepl(".csv", argv$snpmatrix)) {
@@ -61,9 +60,13 @@ if("snpmatrix" %in% names(argv)){
 }
 
 ## get optional tree
-if("tree" %in% names(argv)){
+if(!is.na(argv$tree)){
   treepath <- argv$tree
 }
 
+## get optional ar-summary
+if(!is.na(argv$artable)){
+  ar_summary <- argv$artable
+}
 
 rmarkdown::render("ar_report_generator.Rmd",output_file=paste0(Sys.Date(),'.ar-report.html'))
