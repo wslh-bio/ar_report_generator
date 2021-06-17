@@ -219,11 +219,14 @@ if(exists('treepath')){
 <center>
 ```{r ar_table}
 if(exists('ar_summary')){
+  ar_summary <- ar_summary[order(ar_summary$Sample),]
+  row.names(ar_summary) <- NULL
   # plot table
   kbl(ar_summary) %>%
     kable_styling(bootstrap_options = c("hover", "condensed", "responsive"),
     fixed_thead = T,
-    font_size = 14)
+    font_size = 14) %>%
+    pack_rows(index=table(ar_summary$Sample))
 }
 ```
 </center>
