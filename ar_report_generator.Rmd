@@ -135,6 +135,7 @@ kbl(sampleDF[,1:8]) %>%
 `r if(exists('snpData') | exists('treepath')){"## RELATEDNESS"}`
 
 `r if(exists('snpData')){"### HEATMAP"}`
+`r if(exists('snpData')){config$heatmap.text}`
 <center>
 ```{r heatmap}
 if(exists('snpData')){
@@ -150,12 +151,20 @@ if(exists('snpData')){
 </center>
 `r if(exists('snpData')){"***"}`
 
-`r if(exists('treepath')){"### TREE"}`
+`r if(exists('treepath')){"### PHYLOGENETIC TREE"}`
+`r if(exists('treepath')){config$tree.text}`
+`r if(exists('treepath') & exists('cgstats')){paste("Core Genes Identified: ",cgstats[cgstats$V1 == 'Core genes',3],'\n')}`
+`r if(exists('treepath') & exists('cgstats')){paste("Total Genes Identified: ",cgstats[cgstats$V1 == 'Total genes',3])}`
 <center>
 ```{r tree, message=FALSE}
 if(exists('treepath')){
   set.seed(42)
   tree <- ape::read.tree(treepath)
+  
+  if(exists('cgstats')){
+    paste("Core Genes Identified: ",cgstats[cgstats$V1 == 'Core genes',3])
+    paste("Total Genes Identified: ",cgstats[cgstats$V1 == 'Total genes',3])
+  }
 
   if(config$root.method == 'midpoint'){
     tree <- midpoint.root(tree)
@@ -231,11 +240,20 @@ if(exists('ar_summary')){
 ```
 </center>
 
-## ADDITIONAL ANALYSES
-
-* Comprehensive AR Gene Table
-* Virulence Factors
-* Cluster Table
+`r if(exists('optionalData')){"## ADDITIONAL ANALYSES"}`
+<center>
+```{r additional tables, results='asis'}
+if(exists('optionalData')){
+  for(i in 1:length(optionalData)){
+    print(kbl(optionalData[[i]]) %>%
+      kable_styling(bootstrap_options = c("hover", "condensed", "responsive"),
+      fixed_thead = T,
+      font_size = 14))
+    cat('\n')
+  }
+}
+```
+</center>
 
 ## METHODS
 `r methodsTEXT`

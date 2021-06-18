@@ -14,8 +14,14 @@ disclaimer.text: |
 
 # note: the follow text includes methodology included in the report generation
 heatmap.text: |
+  The number of Single Nucleotide Polymorphisms (SNPs) between each sample is shown on the heatmap below. There is no established rule for
+  determining how many SNPs are needed to classify an outbreak. Generally it is best to look for patterns in the data between the SNP data and the
+  core-genome tree. The samples are ordered based on the euclidean distance between each sample.
 tree.text: |
-
+  The core-genome phylogenetic tree examines the genetic diversity across the core set of genes shared across all samples in the in the analysis. Related samples
+  will generally share a recent common ancestor and a small amount of horizontal distance on the tree. The number of core-genes provides an indication of how diverse
+  the sample is, a lower number of core genes suggests a genetically diverse dataset or an outlier is present.
+  
 ### report methodology params ###
 
 # heatmap distance metric, must be one of the following: "euclidean", "maximum", "manhattan", "canberra", "binary" or "minkowski"

@@ -17,6 +17,7 @@ parser <- add_argument(parser, "config", help="report configuration file")
 parser <- add_argument(parser, "--date", default=Sys.Date(), help="set date of report, default: current date")
 parser <- add_argument(parser, "--snpmatrix", help="csv/tsv of snp data")
 parser <- add_argument(parser, "--tree", help="tree data")
+parser <- add_argument(parser, "--cgstats", help="prokka cg stats 'core_genome_statistics.txt'")
 parser <- add_argument(parser, "--artable", help="ar data")
 parser <- add_argument(parser, "--additionaldatatables", help="", nargs=Inf)
 
@@ -42,19 +43,18 @@ if(grepl(".tsv", argv$sampletable)){
 } else if(grepl(".csv", argv$sampletable)) {
   sampleDF <- read.csv2(argv$sampletable,sep=',')
 } else {
-  print('Sample table must be in csv/tsv format.')
+  print('Sample table must be in csv/tsv format with a .tsv or .csv extension.')
   quit(save="no", status=1)
 }
 
 ## get optional heatmap
-print(argv$snpmatrix)
 if(!is.na(argv$snpmatrix)){
   if(grepl(".tsv", argv$snpmatrix)){
     snpData <- read.csv2(argv$snpmatrix,sep='\t')
   } else if(grepl(".csv", argv$snpmatrix)) {
     snpData <- read.csv2(argv$snpmatrix,sep=',')
   } else {
-    print('SNP data must be in csv/tsv format.')
+    print('SNP data must be in csv/tsv format with a .tsv or .csv extension.')
     quit(save="no", status=1)
   }
 }
@@ -64,6 +64,11 @@ if(!is.na(argv$tree)){
   treepath <- argv$tree
 }
 
+## get optional cgstats
+if(!is.na(argv$cgstats)){
+  cgstats <- read.csv2(argv$cgstats,sep='\t',header = FALSE)
+}
+
 ## get optional ar-summary
 if(!is.na(argv$artable)){
   if(grepl(".tsv", argv$artable)){
@@ -71,8 +76,24 @@ if(!is.na(argv$artable)){
   } else if(grepl(".csv", argv$artable)) {
     ar_summary <- read.csv2(argv$artable,sep=',')
   } else {
-    print('AR data must be in csv/tsv format.')
+    print('AR data must be in csv/tsv format with a .tsv or .csv extension.')
     quit(save="no", status=1)
+  }
+}
+
+## get optional additional data tables
+if(!is.na(argv$additionaldatatables)){
+  optionalData <- list()
+  for (df_path in argv$additionaldatatables){
+    if(grepl(".tsv", df_path)){
+      df <- read.csv2(df_path,sep='\t')
+    } else if(grepl(".csv", df_path)) {
+      df <- read.csv2(df_path,sep=',')
+    } else {
+      print('Additional data must be in csv/tsv format with a .tsv or .csv extension.')
+      quit(save="no", status=1)
+    }
+    optionalData[[length(optionalData)+1]] <- df
   }
 }
 
