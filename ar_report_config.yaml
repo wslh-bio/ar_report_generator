@@ -1,11 +1,13 @@
 # ar_report_generator configuration file
+# note: please use spaces instead of tabs, indentation for .text blocks is two spaces
 
 ### report text ###
 sub.title: "Antimicrobial Resistance Outbreak Report"
 summary.paragraph: |
-  This report outlines the relationship between a set of samples collected at a facility described by the outbreak ID: 1337. An set of external OXA-24 samples were also included to provide context to the outbreak.
+  This report outlines the relationship between a set of samples collected at a facility described by the outbreak ID: 1337. An set of external OXA-24 samples were also included to provide context to the outbreak.</br>
   We found all the outbreak samples were related including an evironmental sample.
 ar_gene_summary.text: |
+  This report shows a summary of all genes detected using the NCBI AMR Finder Plus detection tool.
 methods.text: |
   The figures shown here were generated using sequence data processed with the BEST data analysis pipeline, Greatest Pipeline v1.0.0 (https://github.com). SNPs were called using the Center for Single Nuclelotide Variants (CSNV) SNP pipeline. If you have questions about this report please contact someone who knows something at someone@somewhere.over.rainbow.
 disclaimer.text: |
@@ -21,7 +23,8 @@ tree.text: |
   The core-genome phylogenetic tree examines the genetic diversity across the core set of genes shared across all samples in the in the analysis. Related samples
   will generally share a recent common ancestor and a small amount of horizontal distance on the tree. The number of core-genes provides an indication of how diverse
   the sample is, a lower number of core genes suggests a genetically diverse dataset or an outlier is present.
-  
+optionaldata.text: |
+
 ### report methodology params ###
 
 # heatmap distance metric, must be one of the following: "euclidean", "maximum", "manhattan", "canberra", "binary" or "minkowski"

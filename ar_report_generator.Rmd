@@ -225,6 +225,7 @@ if(exists('treepath')){
 `r if(exists('treepath')){"***"}`
 
 `r if(exists('ar_summary')){"## AR GENE SUMMARY"}`
+`r if(exists('ar_summary')){config$ar_gene_summary.text}`
 <center>
 ```{r ar_table}
 if(exists('ar_summary')){
@@ -241,6 +242,7 @@ if(exists('ar_summary')){
 </center>
 
 `r if(exists('optionalData')){"## ADDITIONAL ANALYSES"}`
+`r if(exists('optionalData')){config$optionaldata.text}`
 <center>
 ```{r additional tables, results='asis'}
 if(exists('optionalData')){
