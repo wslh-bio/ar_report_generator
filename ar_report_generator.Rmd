@@ -76,7 +76,7 @@ h2::after {
 
 <div class ="titlePanel">
 ```{r, echo=FALSE, fig.align='left',out.height='100px',out.extra="style='margin:20px'"}
-knitr::include_graphics("ar_logo.png")
+knitr::include_graphics(config$logo)
 ```
 </div>
 
@@ -138,15 +138,25 @@ kbl(sampleDF[,1:8]) %>%
 `r if(exists('snpData')){config$heatmap.text}`
 <center>
 ```{r heatmap}
-if(exists('snpData')){
+if(exists('snpData') && config$show.snp==TRUE){
   rownames(snpData) <- snpData$X
   snpData <- snpData [,-1]
   heatmaply(snpData,
-            #cellnote=snpData,
+            cellnote=snpData,
+            colors = viridis(n = 256, alpha = 1, begin = 1, end = 0, option = "viridis"),
+            show_dendrogram = c(FALSE, FALSE),
+            dist_method=config$heat.dist.method, label_names = c("Row", "Column", "SNPs"))
+}
+
+if(exists('snpData') && config$show.snp==FALSE){
+  rownames(snpData) <- snpData$X
+  snpData <- snpData [,-1]
+  heatmaply(snpData,
             colors = viridis(n = 256, alpha = 1, begin = 1, end = 0, option = "viridis"),
             show_dendrogram = c(FALSE, FALSE),
             dist_method=config$heat.dist.method)
 }
+
 ```
 </center>
 `r if(exists('snpData')){"***"}`
