@@ -30,9 +30,15 @@ optionaldata.text: |
 # heatmap distance metric, must be one of the following: "euclidean", "maximum", "manhattan", "canberra", "binary" or "minkowski"
 heat.dist.method: 'euclidean'
 
+# show SNP values in the heatmap (TRUE/FALSE)
+show.snp: FALSE
+
 # tree rooting method, must be one of the following: 'midpoint', 'unrooted', or a sample id
 root.method: 'midpoint'
 
 # show tree bootstrap (TRUE/FALSE) and threshold for displying values
 show.bootstrap: FALSE
 bootstrap.threshold: 80
+
+# path to logo shown in the top left corner of the report
+logo: 'ar_logo.png'
