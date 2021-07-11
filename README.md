@@ -6,7 +6,8 @@ AR Report Generator is an R script used to render a report from the output of pi
 
 Running the report generator using 'Rscript render_report.R' provides a menu of options:
 
-```usage: render_report.R [--] [--help] [--opts OPTS] [--date DATE]
+```
+usage: render_report.R [--] [--help] [--opts OPTS] [--date DATE]
        [--snpmatrix SNPMATRIX] [--tree TREE] [--cgstats CGSTATS]
        [--artable ARTABLE] [--additionaldatatables
        ADDITIONALDATATABLES] projectname username sampletable config
@@ -30,7 +31,30 @@ optional arguments:
   -a, --artable           ar data
   ```
 
-The required inputs for rendering the report are a project name (the title of the report), a username (who generated the report), a sample table (table with metadata for the samples analyzed) and a yaml configuration file. Adding the -s option with a SNP matrix in csv/tsv format will plot the SNP matrix as a heatmap in the report. Adding the -s option with a SNP matrix in csv/tsv format will plot the SNP matrix as a heatmap in the report. Adding the -t option with a phylogenetic tree in newick format will plot a tree in the report
+The required inputs for rendering the report are a project name (the title of the report), a username (who generated the report), a sample table (table with metadata for the samples analyzed) and a yaml configuration file.
+```
+Rscript render_report.R 'AR Report' 'Abigail Shockey' test_data/samples.csv ar_report_config.yaml
+```
+
+Adding the -s option with a SNP matrix in csv/tsv format will plot the SNP matrix as a heatmap in the report.
+```
+Rscript render_report.R -s test_data/snp_distance_matrix.tsv 'AR Report' 'Abigail Shockey' test_data/samples.csv ar_report_config.yaml
+```
+
+Adding the -t option with a phylogenetic tree in newick format will plot a tree in the report
+```
+Rscript render_report.R -t test_data/core_genome.tree 'AR Report' 'Abigail Shockey' test_data/samples.csv ar_report_config.yaml
+```
+
+Adding the -c option with core genome statistics from the output of [Roary]() will add a table of those statistics to the report
+```
+Rscript render_report.R -c test_data/core_genome_statistics.txt 'AR Report' 'Abigail Shockey' test_data/samples.csv ar_report_config.yaml
+```
+
+Adding the -a option with a table of AR genes in csv/tsv format will add a table of those genes to the report
+```
+Rscript render_report.R -a test_data/ar_predictions.tsv 'AR Report' 'Abigail Shockey' test_data/samples.csv ar_report_config.yaml
+```
 
 ## Authors
 [Kelsey Florek](https://github.com/k-florek), WSLH Bioinformatics Scientist  
