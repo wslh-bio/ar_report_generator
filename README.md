@@ -28,9 +28,8 @@ optional arguments:
   -s, --snpmatrix         csv/tsv of snp data
   -t, --tree              tree data
   -c, --cgstats           prokka cg stats 'core_genome_statistics.txt'
-  -a, --artable           ar data```
-
-
+  -a, --artable           ar data
+```
 ## Authors
 [Kelsey Florek](https://github.com/k-florek), WSLH Bioinformatics Scientist  
 [Abigail Shockey](https://github.com/AbigailShockey), WSLH Bioinformatics Scientist
