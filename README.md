@@ -22,7 +22,6 @@ flags:
   -h, --help              show this help message and exit
 
 optional arguments:
-  -x, --opts              RDS file containing argument values
   -d, --date              set date of report, default: current date
                           [default: 2021-07-11]
   -s, --snpmatrix         csv/tsv of snp data
