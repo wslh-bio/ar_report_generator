@@ -1,0 +1,303 @@
+---
+title: "PUBLIC HEALTH WHOLE GENOME SEQUENCING ANALYSIS REPORT"
+output:
+  officedown::rdocx_document:
+    tables:
+      align: center
+      style: Table
+      layout: autofit
+      width: 1.0
+      caption:
+        style: Table Caption
+        pre: 'Table '
+        sep: ': '
+      conditional:
+        first_row: true
+        first_column: false
+        last_row: false
+        last_column: false
+        no_hband: false
+        no_vband: true
+    plots:
+      style: Normal
+      align: center
+      caption:
+        style: Image Caption
+        pre: 'Figure '
+        sep: ': '
+    lists:
+      ol.style: null
+      ul.style: null
+    mapstyles:
+      Normal: ['First Paragraph', 'Author', 'Date']
+    page_size:
+      width: 8.5
+      height: 11
+      orient: "portrait"
+    page_margins:
+      bottom: 1
+      top: 1
+      right: 0.75
+      left: 0.75
+      header: 0.01
+      footer: 0.01
+      gutter: 0.01
+    reference_num: true
+---
+  
+```{r setup, include=FALSE}
+
+#if (!requireNamespace("BiocManager", quietly = TRUE))
+#  install.packages("BiocManager")
+#BiocManager::install("ggtree")
+
+library(officedown)
+library(officer)
+library(flextable) 
+library(ggplot2)
+library(plotly)
+library(ape)
+library(ggtree)
+library(heatmaply)
+library(phytools)
+library(flextable)
+library(dplyr) 
+library(tidyverse)
+library(huxtable)
+library(kableExtra)
+
+knitr::opts_chunk$set(echo = FALSE,warning=FALSE,message=FALSE)
+set_flextable_defaults(font.family = 'Arial')
+text_format <- fp_text(font.size = 12, font.family = "Arial")
+
+```
+
+`r ftext(subHeaderText,prop = text_format)`
+
+```{r intro}
+
+# create table
+colnames(headerDF) <- c("REPORT DATE","PROJECT NAME","PREPARED BY")
+
+# plot table
+ft <- flextable(headerDF)
+ft %>% autofit(part = "all") %>% fit_to_width(8) 
+# %>% padding(padding = 1, part = "all")
+```
+
+# SUMMARY
+
+`r ftext(summaryTEXT,prop = text_format)`
+
+\newpage
+
+# SAMPLES
+
+```{r samples}
+
+# create table
+colnames(sampleDF) <- c("Lab ID", "Isolate Collection Date", "Local ID", "Species ID", "Specimen Source","MLST", "Resistance Genes", "Comments","TreeGroup")
+
+# plot table
+#ft <- flextable(sampleDF) %>% set_table_properties(layout = "autofit")
+#ftt <- FitFlextableToPage(ft)
+#ft
+#ft %>% autofit(part = "all") %>% fit_to_width(8)
+sample_ht <- as_hux(sampleDF)
+
+sample_ht <- sample_ht %>%
+      set_all_padding(1) %>%
+#      set_outer_padding(0) %>%
+      set_number_format(0) %>%
+      set_bold(row = 1, col = everywhere) %>%
+#      set_bottom_border(row = 2, col = everywhere) %>%
+#      set_width(1) %>%
+      set_background_color(evens, everywhere, "grey95")
+
+ft <- as_flextable(sample_ht)
+ft %>% autofit(part = "all") %>% fit_to_width(7)
+
+```
+
+
+\newpage
+
+
+`r if(exists('snpData') | exists('treepath')){"# RELATEDNESS"}`
+
+`r if(exists('snpData')){"## HEATMAP"}`
+
+`r if(exists('snpData')){ftext(config$heatmap.text,prop = text_format)}`
+
+```{r heatmap, fig.width=7, fig.height=5}
+if(exists('snpData') && config$show.snp==TRUE){
+  rownames(snpData) <- snpData$X
+  snpData <- snpData [,-1]
+  fig <- heatmaply(snpData,
+            cellnote=snpData,
+            colors = viridis(n = 256, alpha = 1, begin = 1, end = 0, option = "viridis"),
+            show_dendrogram = c(FALSE, FALSE), plot_method = "plotly",
+            dist_method=config$heat.dist.method, label_names = c("Row", "Column", "SNPs"))
+  orca(fig, "snp-plot.png", width = 7 * 96, height = 5 * 96)
+  fpar_fig <- fpar(external_img(src = "snp-plot.png", height = 5, width = 7))
+  fpar_fig
+}
+
+if(exists('snpData') && config$show.snp==FALSE){
+  rownames(snpData) <- snpData$X
+  snpData <- snpData [,-1]
+  fig <- heatmaply(snpData,
+            colors = viridis(n = 256, alpha = 1, begin = 1, end = 0, option = "viridis"),
+            show_dendrogram = c(FALSE, FALSE),
+            dist_method=config$heat.dist.method, plot_method = "plotly")
+  orca(fig, "snp-plot.png", width = 7 * 96, height = 5 * 96)
+  fpar_fig <- fpar(external_img(src = "snp-plot.png", height = 5, width = 7))
+  fpar_fig
+}
+
+```
+
+
+\newpage
+
+
+`r if(exists('treepath')){"## PHYLOGENETIC TREE"}`
+
+`r if(exists('treepath')){ftext(config$tree.text,prop = text_format)}`
+
+`r if(exists('treepath') & exists('cgstats')){ftext(paste("Core Genes Identified: ",cgstats[cgstats$V1 == 'Core genes',3],'\n'),prop = text_format)}`
+
+`r if(exists('treepath') & exists('cgstats')){ftext(paste("Total Genes Identified: ",cgstats[cgstats$V1 == 'Total genes',3]),prop = text_format)}`
+
+```{r tree, message=FALSE}
+if(exists('treepath')){
+  set.seed(42)
+  tree <- ape::read.tree(treepath)
+  
+  if(exists('cgstats')){
+    paste("Core Genes Identified: ",cgstats[cgstats$V1 == 'Core genes',3])
+    paste("Total Genes Identified: ",cgstats[cgstats$V1 == 'Total genes',3])
+  }
+  
+  if(config$root.method == 'midpoint'){
+    tree <- midpoint.root(tree)
+  }
+  else if(config$root.method == 'unrooted'){
+    tree <- tree
+  }
+  else {
+    node <- match(config$root.method, tree$tip.label)
+    if(is.na(node)){
+      message('Root sample ID not found')
+      quit(save="no", status=1)
+    } else {
+      tree <- reroot(tree,node)
+    }
+  }
+  
+  # metadata
+  id <- tree$tip.label
+  
+  # group samples if we have a grouping catagory
+  if(any(!is.na(sampleDF$TreeGroup))){
+    #reorder sampleDF
+    orderedDF <- sampleDF[match(id,sampleDF$'Lab ID'),]
+    grp <- orderedDF$TreeGroup
+  }
+  else {
+    grp <- NULL
+  }
+
+  dat <- tibble::tibble(id = id)
+  # plot tree
+  ggtree_plot <- ggtree(tree)
+  metat <- ggtree_plot$data %>%
+    dplyr::inner_join(dat, c('label' = 'id'))
+  
+  ggtree_plot <- ggtree_plot +
+    geom_point(data = metat,
+               aes(x = x,
+                   y = y,
+                   colour = grp,
+                   label = id, text = paste0(id)),show.legend = FALSE)
+  
+  d <- ggtree_plot$data
+  
+  if(config$show.bootstrap){
+    #filter bootstrap values
+    d <- ggtree_plot$data
+    bs <- d[!d$isTip,]
+    bs$label <- as.numeric(bs$label)
+    bs <- bs[bs$label > bootstrap.threshold,]
+    ggtree_plot <- ggtree_plot + geom_text(data=bs,aes(label=label), nudge_x = -0.0001)
+  }
+  
+  tl <- d[d$isTip,]
+  ggtree_plot <- ggtree_plot + geom_text(data=tl,aes(label=label), nudge_x = 0.00015)
+  
+  fig <- ggplotly(ggtree_plot, tooltip = "text")
+  orca(fig, "tree-plot.png", width = 6.5 * 72, height = 6.5 * 72)
+  fpar_fig <- fpar(external_img(src = "tree-plot.png", height = 6.5, width = 6.5))
+  fpar_fig
+}
+```
+
+\newpage
+
+
+`r if(exists('ar_summary')){"# AR GENE SUMMARY"}`
+
+`r if(exists('ar_summary')){ftext(config$ar_gene_summary.text,prop = text_format)}`
+
+
+```{r ar_table}
+if(exists('ar_summary')){
+  ar_summary <- ar_summary[order(ar_summary$Sample),]
+  row.names(ar_summary) <- NULL
+
+  ar_ht <- as_hux(ar_summary)
+  ar_ht <- ar_ht %>%
+      set_all_padding(1) %>%
+      set_number_format(0) %>%
+      set_bold(row = 1, col = everywhere) %>%
+      set_background_color(evens, everywhere, "grey95")
+
+ft <- as_flextable(ar_ht)
+ft %>% autofit(part = "all") %>% fit_to_width(7)
+}
+```
+
+\newpage
+
+`r if(exists('optionalData')){"# ADDITIONAL ANALYSES"}`
+`r if(exists('optionalData')){ftext(config$optionaldata.text,prop = text_format)}`
+
+```{r pressure}
+
+if(exists('optionalData')){
+  count <- 0
+  for(i in 1:length(optionalData)){
+    count <- count + 1
+    df <- optionalData[[i]]
+
+    df_ht <- as_hux(df)
+    df_ht <- df_ht %>%
+      set_all_padding(1) %>%
+      set_number_format(0) %>%
+      set_bold(row = 1, col = everywhere) %>%
+      set_background_color(evens, everywhere, "grey95")
+    
+    out_file <- paste("additional_table_",count,".docx",sep = "")
+    quick_docx(df_ht, file = out_file)
+    
+  }
+}
+```
+
+# METHODS
+`r ftext(methodsTEXT,prop = text_format)`
+
+\newpage
+
+# DISCLAIMER
+`r ftext(disclaimerTEXT,prop = text_format)`
