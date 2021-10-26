@@ -1,10 +1,13 @@
 # ar_report_generator configuration file
 # note: please use spaces instead of tabs, indentation for .text blocks is two spaces
 
+# output fromat, must be one of the following: 'word', 'html'
+outformat: 'html'
+
 ### report text ###
 sub.title: "Antimicrobial Resistance Outbreak Report"
 summary.paragraph: |
-  This report outlines the relationship between a set of samples collected at a facility described by the outbreak ID: 1337. An set of external OXA-24 samples were also included to provide context to the outbreak.</br>
+  This report outlines the relationship between a set of samples collected at a facility described by the outbreak ID: 1337. An set of external OXA-24 samples were also included to provide context to the outbreak.
   We found all the outbreak samples were related including an evironmental sample.
 ar_gene_summary.text: |
   This report shows a summary of all genes detected using the NCBI AMR Finder Plus detection tool.
