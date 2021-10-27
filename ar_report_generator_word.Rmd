@@ -44,7 +44,7 @@ output:
       gutter: 0.01
     reference_num: true
 ---
-  
+
 ```{r setup, include=FALSE}
 
 #if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -53,7 +53,7 @@ output:
 
 library(officedown)
 library(officer)
-library(flextable) 
+library(flextable)
 library(ggplot2)
 library(plotly)
 library(ape)
@@ -61,7 +61,7 @@ library(ggtree)
 library(heatmaply)
 library(phytools)
 library(flextable)
-library(dplyr) 
+library(dplyr)
 library(tidyverse)
 library(huxtable)
 library(kableExtra)
@@ -81,7 +81,7 @@ colnames(headerDF) <- c("REPORT DATE","PROJECT NAME","PREPARED BY")
 
 # plot table
 ft <- flextable(headerDF)
-ft %>% autofit(part = "all") %>% fit_to_width(8) 
+ft %>% autofit(part = "all") %>% fit_to_width(8)
 # %>% padding(padding = 1, part = "all")
 ```
 
@@ -173,12 +173,12 @@ if(exists('snpData') && config$show.snp==FALSE){
 if(exists('treepath')){
   set.seed(42)
   tree <- ape::read.tree(treepath)
-  
+
   if(exists('cgstats')){
     paste("Core Genes Identified: ",cgstats[cgstats$V1 == 'Core genes',3])
     paste("Total Genes Identified: ",cgstats[cgstats$V1 == 'Total genes',3])
   }
-  
+
   if(config$root.method == 'midpoint'){
     tree <- midpoint.root(tree)
   }
@@ -194,10 +194,10 @@ if(exists('treepath')){
       tree <- reroot(tree,node)
     }
   }
-  
+
   # metadata
   id <- tree$tip.label
-  
+
   # group samples if we have a grouping catagory
   if(any(!is.na(sampleDF$TreeGroup))){
     #reorder sampleDF
@@ -213,16 +213,16 @@ if(exists('treepath')){
   ggtree_plot <- ggtree(tree)
   metat <- ggtree_plot$data %>%
     dplyr::inner_join(dat, c('label' = 'id'))
-  
+
   ggtree_plot <- ggtree_plot +
     geom_point(data = metat,
                aes(x = x,
                    y = y,
                    colour = grp,
                    label = id, text = paste0(id)),show.legend = FALSE)
-  
+
   d <- ggtree_plot$data
-  
+
   if(config$show.bootstrap){
     #filter bootstrap values
     d <- ggtree_plot$data
@@ -231,10 +231,10 @@ if(exists('treepath')){
     bs <- bs[bs$label > bootstrap.threshold,]
     ggtree_plot <- ggtree_plot + geom_text(data=bs,aes(label=label), nudge_x = -0.0001)
   }
-  
+
   tl <- d[d$isTip,]
   ggtree_plot <- ggtree_plot + geom_text(data=tl,aes(label=label), nudge_x = 0.00015)
-  
+
   fig <- ggplotly(ggtree_plot, tooltip = "text")
   orca(fig, "tree-plot.png", width = 6.5 * 72, height = 6.5 * 72)
   fpar_fig <- fpar(external_img(src = "tree-plot.png", height = 6.5, width = 6.5))
@@ -262,8 +262,8 @@ if(exists('ar_summary')){
       set_bold(row = 1, col = everywhere) %>%
       set_background_color(evens, everywhere, "grey95")
 
-ft <- as_flextable(ar_ht)
-ft %>% autofit(part = "all") %>% fit_to_width(7)
+  ft <- as_flextable(ar_ht)
+  ft %>% autofit(part = "all") %>% fit_to_width(7)
 }
 ```
 
@@ -272,7 +272,7 @@ ft %>% autofit(part = "all") %>% fit_to_width(7)
 `r if(exists('optionalData')){"# ADDITIONAL ANALYSES"}`
 `r if(exists('optionalData')){ftext(config$optionaldata.text,prop = text_format)}`
 
-```{r pressure}
+```{r additional tables, results='asis'}
 
 if(exists('optionalData')){
   count <- 0
@@ -286,10 +286,11 @@ if(exists('optionalData')){
       set_number_format(0) %>%
       set_bold(row = 1, col = everywhere) %>%
       set_background_color(evens, everywhere, "grey95")
-    
-    out_file <- paste("additional_table_",count,".docx",sep = "")
-    quick_docx(df_ht, file = out_file)
-    
+
+    cat("<w:p/>")
+    ft <- as_flextable(df_ht)
+    ft <- ft %>% autofit(part = "all") %>% fit_to_width(7)
+    flextable_to_rmd(ft)
   }
 }
 ```
