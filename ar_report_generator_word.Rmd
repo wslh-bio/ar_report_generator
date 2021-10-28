@@ -53,22 +53,25 @@ output:
 
 library(officedown)
 library(officer)
-library(flextable)
-library(ggplot2)
-library(plotly)
-library(ape)
-library(ggtree)
-library(heatmaply)
-library(phytools)
-library(flextable)
 library(dplyr)
 library(tidyverse)
+library(ggplot2)
+library(plotly)
+library(heatmaply)
+library(reticulate)
+library(flextable)
 library(huxtable)
-library(kableExtra)
+library(ape)
+library(ggtree)
+library(phytools)
 
 knitr::opts_chunk$set(echo = FALSE,warning=FALSE,message=FALSE)
 set_flextable_defaults(font.family = 'Arial')
 text_format <- fp_text(font.size = 12, font.family = "Arial")
+
+reticulate::py_discover_config()
+reticulate::py_available(TRUE)
+reticulate::use_python("/usr/local/bin/python3.8")
 
 ```
 
@@ -150,7 +153,8 @@ if(exists('snpData') && config$show.snp==FALSE){
             colors = viridis(n = 256, alpha = 1, begin = 1, end = 0, option = "viridis"),
             show_dendrogram = c(FALSE, FALSE),
             dist_method=config$heat.dist.method, plot_method = "plotly")
-  orca(fig, "snp-plot.png", width = 7 * 96, height = 5 * 96)
+  plotly::save_image(fig, "snp-plot.png", width = 7, height = 5)
+#  orca(fig, "snp-plot.png", width = 7 * 96, height = 5 * 96)
   fpar_fig <- fpar(external_img(src = "snp-plot.png", height = 5, width = 7))
   fpar_fig
 }
@@ -236,7 +240,8 @@ if(exists('treepath')){
   ggtree_plot <- ggtree_plot + geom_text(data=tl,aes(label=label), nudge_x = 0.00015)
 
   fig <- ggplotly(ggtree_plot, tooltip = "text")
-  orca(fig, "tree-plot.png", width = 6.5 * 72, height = 6.5 * 72)
+  plotly::save_image(fig, "tree-plot.png", width = 7, height = 5)
+#  orca(fig, "tree-plot.png", width = 6.5 * 72, height = 6.5 * 72)
   fpar_fig <- fpar(external_img(src = "tree-plot.png", height = 6.5, width = 6.5))
   fpar_fig
 }
@@ -275,11 +280,12 @@ if(exists('ar_summary')){
 ```{r additional tables, results='asis'}
 
 if(exists('optionalData')){
-  count <- 0
   for(i in 1:length(optionalData)){
-    count <- count + 1
     df <- optionalData[[i]]
-
+    cn <- colnames(df)
+    cn <- gsub("\\."," ",cn)
+    colnames(df) <- cn
+    
     df_ht <- as_hux(df)
     df_ht <- df_ht %>%
       set_all_padding(1) %>%
