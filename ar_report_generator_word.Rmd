@@ -71,7 +71,7 @@ text_format <- fp_text(font.size = 12, font.family = "Arial")
 
 reticulate::py_discover_config()
 reticulate::py_available(TRUE)
-reticulate::use_python("/usr/local/bin/python3.8")
+reticulate::use_python(config$py.path)
 
 ```
 
