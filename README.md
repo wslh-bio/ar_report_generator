@@ -63,6 +63,31 @@ Multiple tables can be added using the --additionaldatatables option, but they m
 ```
 Rscript render_report.R --additionaldatatables 'test_data/mlst_formatted.tsv test_data/S01.mash.tsv' 'AR Report' 'Abigail Shockey' test_data/samples.csv ar_report_config.yaml
 ```  
+### Dependencies
+
+A Docker container of the Rmarkdown files' dependencies can be pulled from [quay.io/wslh-bioinformatics/ar-report:1.0.0](https://quay.io/repository/wslh-bioinformatics/ar-report). The R Markdown scripts have many dependencies, so we highly recommend rendering the report using the Docker container. 
+
+If you choose to manually render the report in RStudio, you will need to install the following R libraries from the [CRAN repository](https://cran.r-project.org/):  
+
+* argparser  
+* yaml  
+* knitr  
+* rmarkdown  
+* tidyverse  
+* ggplot2  
+* plotly  
+* heatmaply  
+* reticulate  
+* kableExtra  
+* pander  
+* flextable  
+* huxtable  
+* officer  
+* officedown  
+* phytools  
+* mnormt  
+* BiocManager  
+* ggtree  
 ## Authors
 [Kelsey Florek](https://github.com/k-florek), WSLH Bioinformatics Scientist  
 [Abigail Shockey](https://github.com/AbigailShockey), WSLH Bioinformatics Scientist
