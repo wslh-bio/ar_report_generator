@@ -37,7 +37,7 @@ The required inputs for rendering the report are a project name (the title of th
 Rscript render_report.R 'AR Report' 'Abigail Shockey' test_data/samples.csv ar_report_config.yaml
 ```
 
-Adding the -s option with a SNP matrix in csv/tsv format will plot the SNP matrix as a heatmap in the report.
+Adding the -s option with a SNP matrix in tsv/csv format will plot the SNP matrix as a heatmap in the report.
 ```
 Rscript render_report.R -s test_data/snp_distance_matrix.tsv 'AR Report' 'Abigail Shockey' test_data/samples.csv ar_report_config.yaml
 ```
@@ -47,7 +47,7 @@ Adding the -t option with a phylogenetic tree in newick format will plot a tree 
 Rscript render_report.R -t test_data/core_genome.tree 'AR Report' 'Abigail Shockey' test_data/samples.csv ar_report_config.yaml
 ```
 
-Adding the -c option with core genome statistics from the output of [Roary]() will add a table of those statistics to the report
+Adding the -c option with core genome statistics from the output of [Roary](https://sanger-pathogens.github.io/Roary/) will add a table of those statistics to the report
 ```
 Rscript render_report.R -c test_data/core_genome_statistics.txt 'AR Report' 'Abigail Shockey' test_data/samples.csv ar_report_config.yaml
 ```
