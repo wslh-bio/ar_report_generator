@@ -69,6 +69,7 @@ A Docker container of the Rmarkdown files' dependencies can be pulled from [quay
 
 If you choose to manually render the report in RStudio, you will need to install the following R libraries from the [CRAN repository](https://cran.r-project.org/):  
 
+* rmarkdown  
 * argparser  
 * yaml  
 * knitr  
