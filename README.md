@@ -29,6 +29,7 @@ optional arguments:
   -t, --tree              tree data
   -c, --cgstats           roary cg stats 'core_genome_statistics.txt'
   -a, --artable           ar data
+  --additionaldatatables  additional tables in tsv/csv format
   ```
 
 The required inputs for rendering the report are a project name (the title of the report), a username (who generated the report), a sample table (table with metadata for the samples analyzed) and a yaml configuration file.
