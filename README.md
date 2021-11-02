@@ -32,7 +32,7 @@ optional arguments:
   --additionaldatatables  additional tables in tsv/csv format
   ```
 
-The required inputs for rendering the report are a project name (the title of the report), a username (who generated the report), a sample table (table with metadata for the samples analyzed) and a yaml configuration file.
+The required inputs for rendering the report are a project name (the title of the report), a username (who generated the report), a sample table (table with metadata for the samples analyzed) and a yaml configuration file. For example:  
 ```
 Rscript render_report.R 'AR Report' 'Abigail Shockey' test_data/samples.csv ar_report_config.yaml
 ```
