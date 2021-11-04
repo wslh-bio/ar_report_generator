@@ -56,11 +56,7 @@ Adding the -a option with a table of AR genes in csv/tsv format will add a table
 ```
 Rscript render_report.R -a test_data/ar_predictions.tsv 'AR Report' 'Abigail Shockey' test_data/samples.csv ar_report_config.yaml
 ```  
-Adding the --additionaldatatables option with other tables in csv/tsv format will add those tables to the report  
-```
-Rscript render_report.R --additionaldatatables test_data/mlst_formatted.tsv 'AR Report' 'Abigail Shockey' test_data/samples.csv ar_report_config.yaml
-```  
-Multiple tables can be added using the --additionaldatatables option, but they must be listed as so:  
+Multiple additional tables can be added using the --additionaldatatables option, but they must be listed as so:  
 ```
 Rscript render_report.R --additionaldatatables 'test_data/mlst_formatted.tsv test_data/S01.mash.tsv' 'AR Report' 'Abigail Shockey' test_data/samples.csv ar_report_config.yaml
 ```  
