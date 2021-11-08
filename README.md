@@ -60,6 +60,10 @@ Multiple additional tables can be added using the --additionaldatatables option,
 ```
 Rscript render_report.R --additionaldatatables 'test_data/mlst_formatted.tsv test_data/S01.mash.tsv' 'AR Report' 'Abigail Shockey' test_data/samples.csv ar_report_config.yaml
 ```  
+
+### Output Format
+The report can be rendered in two different formats: html and docx. The default output format is html, but this can be changed to docx using the outformat parameter in the ar_report_config.yaml file.
+
 ### Dependencies  
 A Docker image of the generator's dependencies can be built using the Dockerfile included in this repository, or pulled from [quay.io/wslh-bioinformatics/ar-report:1.0.0](https://quay.io/repository/wslh-bioinformatics/ar-report). The R Markdown scripts used to generate the report have many dependencies, so we highly recommend rendering the report using Docker. 
 
@@ -87,6 +91,18 @@ If you choose to render the report without Docker, you will need to install the 
 As well as the following Python packages:  
 * [plotly](https://plotly.com/python/)
 * [kaleido](https://github.com/plotly/Kaleido)
+
+#### A Note on Plotly, Kaleido and Reticulate:
+When rendering the report in docx format, the report's figures are exported using the python packages Plotly and Kaleido, as well as the R package Reticulate. If you are rendering the report in docx format without the generator's Docker container, you must provide Reticulate the path to your installation of Python using the py.path variable in the ar_report_config.yaml file.
+
+### Testing
+The report generator can be tested by running the test.sh script:
+```
+./test.sh
+```
+
+### Custom Logo
+A custom logo can be added to the report by specifying a path to the logo file in the ar_report_config.yaml file.
 
 ## Authors  
 [Kelsey Florek](https://github.com/k-florek), WSLH Bioinformatics Scientist  
