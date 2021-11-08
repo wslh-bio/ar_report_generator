@@ -62,7 +62,7 @@ Rscript render_report.R --additionaldatatables 'test_data/mlst_formatted.tsv tes
 ```  
 
 ### Output Format
-The report can be rendered in two different formats: html and docx. The default output format is html, but this can be changed to docx using the outformat parameter in the ar_report_config.yaml file.
+The report can be rendered in two different formats: html and docx. The default output format is html, but this can be changed to docx using the outformat parameter in the ar_report_config.yaml file. Example reports in each format (generated using the data found in the test_data folder) can be found in the examples folder.
 
 ### Dependencies  
 A Docker image of the generator's dependencies can be built using the Dockerfile included in this repository, or pulled from [quay.io/wslh-bioinformatics/ar-report:1.0.0](https://quay.io/repository/wslh-bioinformatics/ar-report). The R Markdown scripts used to generate the report have many dependencies, so we highly recommend rendering the report using Docker. 
