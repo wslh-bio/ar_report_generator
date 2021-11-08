@@ -4,7 +4,7 @@
 ### report format ###
 
 # output fromat, must be one of the following: 'word', 'html'
-outformat: 'word'
+outformat: 'html'
 
 # python path, used only when generating a word document
 py.path: '/usr/local/bin/python3.8'
