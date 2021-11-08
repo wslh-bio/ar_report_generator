@@ -49,4 +49,4 @@ show.bootstrap: FALSE
 bootstrap.threshold: 80
 
 # path to logo shown in the top left corner of the report
-logo: 'ar_logo.png'
+logo: 'generator_logo.png'
