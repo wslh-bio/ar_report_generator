@@ -6,42 +6,44 @@
 # output fromat, must be one of the following: 'word', 'html'
 outformat: 'html'
 
-# python path, used only when generating a word document
+# path to your installation of Python
+# only used when generating a word document
+# default set to Python path in the report generator's Docker container
 py.path: '/usr/local/bin/python3.8'
 
-### report text ###
+### main report text ###
 sub.title: 'Antimicrobial Resistance Outbreak Report'
 summary.paragraph: |
-  This report outlines the relationship between a set of samples collected at a facility described by the outbreak ID: 1337. An set of external OXA-24 samples were also included to provide context to the outbreak.
-  We found all the outbreak samples were related including an evironmental sample.
-ar_gene_summary.text: |
-  This report shows a summary of all genes detected using the NCBI AMR Finder Plus detection tool.
+  This report describes the relatedness between a set of bacterial genomes from a suspected outbreak. [Summarize the results of your report here]
 methods.text: |
-  The figures shown here were generated using sequence data processed with the BEST data analysis pipeline, Greatest Pipeline v1.0.0 (https://github.com). SNPs were called using the Center for Single Nuclelotide Variants (CSNV) SNP pipeline. If you have questions about this report please contact someone who knows something at someone@somewhere.over.rainbow.
+  The figures shown here were generated using sequence data processed with the [sequence data analysis pipeline used here] data analysis pipeline. SNPs were called using the [SNP calling pipeline here] pipeline. If you have questions about this report please contact [contact information here].
 disclaimer.text: |
-  The information included in this report should be used to support infection prevention measures. This report should not be used to guide treatment decisions, nor should it be included in the patient record.
+  The information included in this report should only be used to support infection prevention measures. This report should not be used to guide treatment decisions, nor should it be included in the patient record.
   Whole-genome sequencing analysis is a rapidly evolving technology. Whole-genome sequencing and single nucleotide variant analysis will continue to be adjusted and refined over time due to the varied nature of bacterial genomes, limitations on available reference genomes and continual assessment of the inclusion of mobile genetic elements in this analysis. These results represent the most advanced method currently available for genome comparisons.
 
-# note: the follow text includes methodology included in the report generation
+### optional report methodology and results text ###
 heatmap.text: |
   The number of Single Nucleotide Polymorphisms (SNPs) between each sample is shown on the heatmap below. There is no established rule for
   determining how many SNPs are needed to classify an outbreak. Generally it is best to look for patterns in the data between the SNP data and the
-  core-genome tree. The samples are ordered based on the euclidean distance between each sample.
+  phylogenetic tree. The samples are ordered based on the [distance method used here] between each sample.
 tree.text: |
-  The core-genome phylogenetic tree examines the genetic diversity across the core set of genes shared across all samples in the in the analysis. Related samples
-  will generally share a recent common ancestor and a small amount of horizontal distance on the tree. The number of core-genes provides an indication of how diverse
-  the sample is, a lower number of core genes suggests a genetically diverse dataset or an outlier is present.
+  Phylogenetic trees visualize the relatedness and genetic diversity of samples. Closely related samples will generally share a recent common ancestor and a small amount of horizontal distance on the tree.
+ar_gene_summary.text: |
+  This report shows a summary of all antimicrobial resistance genes detected using the [AR gene detection tool used here].
 optionaldata.text: |
-
+  [Information about any additional tables added to the report here]
+  
 ### report methodology params ###
 
-# heatmap distance metric, must be one of the following: "euclidean", "maximum", "manhattan", "canberra", "binary" or "minkowski"
+# heatmap distance metric, must be one of the following: 
+# "euclidean", "maximum", "manhattan", "canberra", "binary" or "minkowski"
 heat.dist.method: 'euclidean'
 
 # show SNP values in the heatmap (TRUE/FALSE)
 show.snp: FALSE
 
-# tree rooting method, must be one of the following: 'midpoint', 'unrooted', or a sample id
+# tree rooting method, must be one of the following: 
+# 'midpoint', 'unrooted', or a sample id
 root.method: 'midpoint'
 
 # show tree bootstrap (TRUE/FALSE) and threshold for displying values
