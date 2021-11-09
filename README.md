@@ -1,6 +1,9 @@
 # AR Report Generator
+![ar_report_generator](https://github.com/wslh-bio/ar_report_generator/actions/workflows/ar_build.yml/badge.svg)
+![GPL-3.0](https://img.shields.io/github/license/wslh-bio/ar_report_generator)
+![GitHub Release](https://img.shields.io/github/release/wslh-bio/ar_report_generator)
 
-AR Report Generator is an R script used to render a report from the output of pipelines that identify antibiotic resistance (AR) genes and/or examine prokaryote relatedness in outbreaks (e.g. [Spriggan](https://github.com/wslh-bio/dryad) and [Dryad](https://github.com/wslh-bio/dryad)).  
+AR Report Generator is an R script used to render a report from the output of pipelines that identify antibiotic resistance (AR) genes and/or examine prokaryote relatedness in outbreaks (e.g. [Spriggan](https://github.com/wslh-bio/spriggan) and [Dryad](https://github.com/wslh-bio/dryad)).  
 
 ## Table of Contents:
 [Usage](#usage)  
@@ -70,7 +73,7 @@ Rscript render_report.R --additionaldatatables 'test_data/mlst_formatted.tsv tes
 ```  
 
 ## Dependencies  
-A Docker image of the generator's dependencies can be built using the [Dockerfile](https://github.com/wslh-bio/ar_report_generator/blob/main/Dockerfile) included in this repository, or pulled from [quay.io/wslh-bioinformatics/ar-report:1.0.0](https://quay.io/repository/wslh-bioinformatics/ar-report). The R Markdown scripts used to generate the report have many dependencies, so we highly recommend rendering the report using Docker. 
+A Docker image of the generator's dependencies can be built using the [Dockerfile](https://github.com/wslh-bio/ar_report_generator/blob/main/Dockerfile) included in this repository, or pulled from [quay.io/wslh-bioinformatics/ar-report:1.0.0](https://quay.io/repository/wslh-bioinformatics/ar-report). The R Markdown scripts used to generate the report have many dependencies, so we highly recommend rendering the report using Docker.
 
 If you choose to render the report without Docker, you will need to install the following R packages:  
 * [rmarkdown](https://cran.r-project.org/web/packages/rmarkdown/index.html)  
@@ -149,5 +152,5 @@ added to the report in docx format using a word processor after it has been rend
 **tree-plot.png** - pPhylogenetic tree in png format (only when docx and tree options are used)  
 
 ## Authors  
-[Kelsey Florek](https://github.com/k-florek), WSLH Bioinformatics Scientist  
+[Kelsey Florek](https://github.com/k-florek), WSLH Senior Genomics and Data Scientist  
 [Abigail Shockey](https://github.com/AbigailShockey), WSLH Bioinformatics Scientist
