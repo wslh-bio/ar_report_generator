@@ -1,6 +1,14 @@
 # AR Report Generator
 
-AR Report Generator is an R script used to render a report from the output of pipelines that examine prokaryote relatedness in outbreaks e.g. [Dryad](https://github.com/wslh-bio/dryad). AR Report Generator uses Rmarkdown and Plotly to generate an interactive html document.
+AR Report Generator is an R script used to render a report from the output of pipelines that identify antibiotic resistance (AR) genes and/or examine prokaryote relatedness in outbreaks (e.g. [Spriggan](https://github.com/wslh-bio/dryad) and [Dryad](https://github.com/wslh-bio/dryad)).  
+
+## Table of Contents:
+[Usage](#usage)  
+[Dependencies](#dependencies)  
+[Output Format](#output-format)    
+[Testing](#testing)  
+[Report Logo](#report-logo)  
+[Output Files](#output-files)  
 
 ## Usage
 
@@ -61,13 +69,10 @@ Multiple additional tables can be added using the --additionaldatatables option,
 Rscript render_report.R --additionaldatatables 'test_data/mlst_formatted.tsv test_data/S01.mash.tsv' 'AR Report' 'Your Name' test_data/samples.csv ar_report_config.yaml
 ```  
 
-### Output Format
-The report can be rendered in two different formats: html and docx. The default output format is html, but this can be changed to docx using the outformat parameter in the [yaml configuration file](https://github.com/wslh-bio/ar_report_generator/blob/main/ar_report_config.yaml) file. Example reports in each format (generated using the data found in the test_data folder) can be found in the examples folder.
-
-### Dependencies  
+## Dependencies  
 A Docker image of the generator's dependencies can be built using the [Dockerfile](https://github.com/wslh-bio/ar_report_generator/blob/main/Dockerfile) included in this repository, or pulled from [quay.io/wslh-bioinformatics/ar-report:1.0.0](https://quay.io/repository/wslh-bioinformatics/ar-report). The R Markdown scripts used to generate the report have many dependencies, so we highly recommend rendering the report using Docker. 
 
-If you choose to render the report without Docker, you will need to install the following R libraries:  
+If you choose to render the report without Docker, you will need to install the following R packages:  
 * [rmarkdown](https://cran.r-project.org/web/packages/rmarkdown/index.html)  
 * [argparser](https://cran.r-project.org/web/packages/argparse/index.html)  
 * [yaml](https://cran.r-project.org/web/packages/yaml/index.html)  
@@ -89,13 +94,13 @@ If you choose to render the report without Docker, you will need to install the 
 * [ggtree](https://bioconductor.org/packages/release/bioc/html/ggtree.html)
 
 As well as the following Python packages:  
-* [plotly](https://plotly.com/python/)
-* [kaleido](https://github.com/plotly/Kaleido)
+* [Plotly](https://plotly.com/python/)
+* [Kaleido](https://github.com/plotly/Kaleido)
 
-#### A Note on Plotly, Kaleido and Reticulate:
-When rendering the report in docx format, the report's figures are exported using the python packages Plotly and Kaleido, as well as the R package Reticulate. If you are rendering the report in docx format without the generator's Docker container, you must provide Reticulate the path to your installation of Python using the py.path parameter in the ar_report_config.yaml file.
+### A Note on Plotly, Kaleido and Reticulate:
+When rendering the report in docx format, the report's figures are exported using the python packages Plotly and Kaleido, as well as the R package Reticulate. If you are rendering the report in docx format without the generator's Docker container, you must provide Reticulate the path to your installation of Python using the py.path parameter in the [yaml configuration file](https://github.com/wslh-bio/ar_report_generator/blob/main/ar_report_config.yaml)..
 
-If you are not using the report generator's docker container, we recommend installing Miniconda using R and the following commands:  
+If you are not using the report generator's Docker container, we recommend installing Miniconda using R and the following commands:  
 ```
 install.packages(c('reticulate'), repos='http://cran.us.r-project.org')
 reticulate::install_miniconda(path='/miniconda',force=TRUE)
@@ -117,16 +122,31 @@ python3.8 get-pip.py
 pip3.8 install -U plotly==5.3.1 kaleido==0.2.1
 ```  
 
-### Testing
+## Output format
+The report can be rendered in two different formats: html and docx. The default output format is html, but this can be changed to docx using the outformat parameter in the [yaml configuration file](https://github.com/wslh-bio/ar_report_generator/blob/main/ar_report_config.yaml). Example reports in each format (generated using the data found in the [test_data folder](https://github.com/wslh-bio/ar_report_generator/tree/main/test_data)) can be found in the [examples folder](https://github.com/wslh-bio/ar_report_generator/tree/main/examples).
+
+## Testing
 The report generator can be tested by running the test.sh script:
 ```
 ./test.sh
 ```
 
-### Custom Logo
-A custom logo can be added to the report by specifying a path to the logo file in the [yaml configuration file](https://github.com/wslh-bio/ar_report_generator/blob/main/ar_report_config.yaml) file.
+## Report logo
+A custom logo can be added to the report by specifying a path to the logo file in the [yaml configuration file](https://github.com/wslh-bio/ar_report_generator/blob/main/ar_report_config.yaml).
 Note: A custom logo can only be added to the report when rendering in html format, but a custom logo can be
 added to the report in docx format using a word processor after it has been rendered.
+
+## Output files
+```
+├── *.ar-report.html
+├── *.ar-report.docx
+├── snp-plot.png
+└── tree-plot.png
+```
+**\*.ar-report.html** - Report in html format (only when html option is used)  
+**\*.ar-report.docx** - Report in docx format (only when docx option is used)  
+**snp-plot.png** - SNP heatmap in png format (only when docx and SNP options are used)  
+**tree-plot.png** - pPhylogenetic tree in png format (only when docx and tree options are used)  
 
 ## Authors  
 [Kelsey Florek](https://github.com/k-florek), WSLH Bioinformatics Scientist  
