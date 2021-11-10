@@ -111,7 +111,7 @@ As well as the following Python packages:
 ### A Note on Plotly, Kaleido and Reticulate:
 When rendering the report in docx format, the report's figures are exported using the python packages Plotly and Kaleido, as well as the R package reticulate. If you are rendering the report in docx format without the generator's Docker container, you must provide reticulate the path to your installation of Python using the py.path parameter in the [yaml configuration file](https://github.com/wslh-bio/ar_report_generator/blob/main/ar_report_config.yaml).
 
-If you are not using the report generator's Docker container, we recommend installing [Miniconda](https://docs.conda.io/en/latest/miniconda.html) using R and the following commands:  
+If you are not using the report generator's Docker container, we recommend installing [Miniconda](https://docs.conda.io/en/latest/miniconda.html), Plotly and Kaleido using R and the following commands:  
 ```
 install.packages(c('reticulate'), repos='http://cran.us.r-project.org')
 reticulate::install_miniconda(path='/miniconda',force=TRUE)
