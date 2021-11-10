@@ -4,7 +4,7 @@
 ### report format ###
 
 # output fromat, must be one of the following: 'html', 'word', 'both'
-outformat: 'both'
+outformat: 'html'
 
 # path to your installation of Python
 # only used when generating a word document
