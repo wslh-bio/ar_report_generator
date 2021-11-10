@@ -101,6 +101,9 @@ if (config$outformat == 'html'){
   rmarkdown::render("ar_report_generator_html.Rmd",output_file=paste0(Sys.Date(),'.ar-report.html'))
 } else if (config$outformat == 'word'){
   rmarkdown::render("ar_report_generator_word.Rmd",output_file=paste0(Sys.Date(),'.ar-report.docx'))
+} else if (config$outformat == 'both'){
+  rmarkdown::render("ar_report_generator_html.Rmd",output_file=paste0(Sys.Date(),'.ar-report.html'))
+  rmarkdown::render("ar_report_generator_word.Rmd",output_file=paste0(Sys.Date(),'.ar-report.docx'))
 } else {
   print('Invalid output format selected. Output formats are html or word.')
   quit(save="no", status=1)
