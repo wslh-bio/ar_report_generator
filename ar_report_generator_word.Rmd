@@ -137,12 +137,13 @@ if(exists('snpData') && config$show.snp==TRUE){
   rownames(snpData) <- snpData$X
   snpData <- snpData [,-1]
   fig <- heatmaply(snpData,
-            cellnote=snpData,
+            cellnote = snpData,
+            cellnote_textposition = "middle center",
             colors = viridis(n = 256, alpha = 1, begin = 1, end = 0, option = "viridis"),
             show_dendrogram = c(FALSE, FALSE), plot_method = "plotly",
             dist_method=config$heat.dist.method, label_names = c("Row", "Column", "SNPs"))
-  orca(fig, "snp-plot.png", width = 7 * 96, height = 5 * 96)
-  fpar_fig <- fpar(external_img(src = "snp-plot.png", height = 5, width = 7))
+  plotly::save_image(fig, "snp-plot.png", width = 7, height = 5)
+  fpar_fig <- fpar(external_img(src = "snp-plot.png", width = 7, height = 5))
   fpar_fig
 }
 
@@ -154,8 +155,7 @@ if(exists('snpData') && config$show.snp==FALSE){
             show_dendrogram = c(FALSE, FALSE),
             dist_method=config$heat.dist.method, plot_method = "plotly")
   plotly::save_image(fig, "snp-plot.png", width = 7, height = 5)
-#  orca(fig, "snp-plot.png", width = 7 * 96, height = 5 * 96)
-  fpar_fig <- fpar(external_img(src = "snp-plot.png", height = 5, width = 7))
+  fpar_fig <- fpar(external_img(src = "snp-plot.png", width = 7, height = 5))
   fpar_fig
 }
 
@@ -232,16 +232,15 @@ if(exists('treepath')){
     d <- ggtree_plot$data
     bs <- d[!d$isTip,]
     bs$label <- as.numeric(bs$label)
-    bs <- bs[bs$label > bootstrap.threshold,]
-    ggtree_plot <- ggtree_plot + geom_text(data=bs,aes(label=label), nudge_x = -0.0001)
+    bs <- bs[bs$label > config$bootstrap.threshold,]
+    ggtree_plot <- ggtree_plot + geom_text(data=bs,aes(label=label), nudge_x = -0.0002)
   }
 
   tl <- d[d$isTip,]
-  ggtree_plot <- ggtree_plot + geom_text(data=tl,aes(label=label), nudge_x = 0.00015)
+  ggtree_plot <- ggtree_plot + geom_text(data=tl,aes(label=label), nudge_x = 0.0002)
 
   fig <- ggplotly(ggtree_plot, tooltip = "text")
   plotly::save_image(fig, "tree-plot.png", width = 7, height = 5)
-#  orca(fig, "tree-plot.png", width = 6.5 * 72, height = 6.5 * 72)
   fpar_fig <- fpar(external_img(src = "tree-plot.png", height = 6.5, width = 6.5))
   fpar_fig
 }
@@ -300,6 +299,8 @@ if(exists('optionalData')){
   }
 }
 ```
+
+\newpage
 
 # METHODS
 `r ftext(methodsTEXT,prop = text_format)`
