@@ -45,31 +45,31 @@ optional arguments:
 
 The required inputs for rendering the report are a project name (the title of the report), a username (who generated the report), a sample table (table with metadata for the samples analyzed) and a yaml configuration file. For example:  
 ```
-Rscript render_report.R 'AR Report' 'A Name' test_data/samples.csv ar_report_config.yaml
+Rscript render_report.R 'Project Name' 'Report Preparer' test_data/samples.csv ar_report_config.yaml
 ```
 
 Adding the -s option with a SNP matrix in tsv/csv format will plot the SNP matrix as a heatmap in the report:
 ```
-Rscript render_report.R -s test_data/snp_distance_matrix.tsv 'AR Report' 'A Name' test_data/samples.csv ar_report_config.yaml
+Rscript render_report.R -s test_data/snp_distance_matrix.tsv 'Project Name' 'Report Preparer' test_data/samples.csv ar_report_config.yaml
 ```
 
 Adding the -t option with a phylogenetic tree in newick format will plot a tree in the report:
 ```
-Rscript render_report.R -t test_data/core_genome.tree 'AR Report' 'A Name' test_data/samples.csv ar_report_config.yaml
+Rscript render_report.R -t test_data/core_genome.tree 'Project Name' 'Report Preparer' test_data/samples.csv ar_report_config.yaml
 ```
 
 Adding the -c option with core genome statistics from the output of [Roary](https://sanger-pathogens.github.io/Roary/) will add a table of those statistics to the report:
 ```
-Rscript render_report.R -c test_data/core_genome_statistics.txt 'AR Report' 'A Name' test_data/samples.csv ar_report_config.yaml
+Rscript render_report.R -c test_data/core_genome_statistics.txt 'Project Name' 'Report Preparer' test_data/samples.csv ar_report_config.yaml
 ```
 
 Adding the -a option with a table of AR genes in csv/tsv format will add a table of those genes to the report:
 ```
-Rscript render_report.R -a test_data/ar_predictions.tsv 'AR Report' 'A Name' test_data/samples.csv ar_report_config.yaml
+Rscript render_report.R -a test_data/ar_predictions.tsv 'Project Name' 'Report Preparer' test_data/samples.csv ar_report_config.yaml
 ```  
 Multiple additional tables can be added using the --additionaldatatables option, but they must be listed as so:  
 ```
-Rscript render_report.R --additionaldatatables 'test_data/mlst_formatted.tsv test_data/S01.mash.tsv' 'AR Report' 'A Name' test_data/samples.csv ar_report_config.yaml
+Rscript render_report.R --additionaldatatables 'test_data/mlst_formatted.tsv test_data/S01.mash.tsv' 'Project Name' 'Report Preparer' test_data/samples.csv ar_report_config.yaml
 ```  
 
 There are also parameters in the [yaml configuration file](https://github.com/wslh-bio/ar_report_generator/blob/main/ar_report_config.yaml) that change plotting options. These include:  
@@ -81,7 +81,7 @@ There are also parameters in the [yaml configuration file](https://github.com/ws
 * bootstrap.threshold, which selects what bootstrap values with be plotted (default: 80)
 
 ## Dependencies  
-A Docker image of the generator's dependencies can be built using the [Dockerfile](https://github.com/wslh-bio/ar_report_generator/blob/main/Dockerfile) included in this repository, or pulled from [quay.io/wslh-bioinformatics/ar-report:1.0.0](https://quay.io/repository/wslh-bioinformatics/ar-report). The R Markdown scripts used to generate the report have many dependencies, so we highly recommend rendering the report using Docker.
+A Docker image of the generator's dependencies can be built using the [Dockerfile](https://github.com/wslh-bio/ar_report_generator/blob/main/Dockerfile) included in this repository, or pulled from [quay.io/wslh-bioinformatics/ar-report:latest](https://quay.io/repository/wslh-bioinformatics/ar-report). The R Markdown scripts used to generate the report have many dependencies, so we highly recommend rendering the report using Docker.
 
 If you choose to render the report without Docker, you will need to install the following R packages:  
 * [rmarkdown](https://cran.r-project.org/web/packages/rmarkdown/index.html)  
