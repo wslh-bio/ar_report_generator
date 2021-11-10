@@ -136,7 +136,7 @@ pip3.8 install -U plotly==5.3.1 kaleido==0.2.1
 Note: If you install Plotly and Kaleido using Miniconda, set the py.path parameter to '/miniconda/envs/r-reticulate/bin/python'
 
 ## Output format
-The report can be rendered in two different formats: html and docx. The default output format is html, but this can be changed to docx using the outformat parameter in the [yaml configuration file](https://github.com/wslh-bio/ar_report_generator/blob/main/ar_report_config.yaml). Example reports in each format (generated using the data found in the [test_data folder](https://github.com/wslh-bio/ar_report_generator/tree/main/test_data)) can be found in the [examples folder](https://github.com/wslh-bio/ar_report_generator/tree/main/examples).
+The report can be rendered in two different formats: html and docx. The default output format is both, but this can be changed using the outformat parameter in the [yaml configuration file](https://github.com/wslh-bio/ar_report_generator/blob/main/ar_report_config.yaml). Example reports in each format (generated using the data found in the [test_data folder](https://github.com/wslh-bio/ar_report_generator/tree/main/test_data)) can be found in the [examples folder](https://github.com/wslh-bio/ar_report_generator/tree/main/examples).
 
 ## Testing
 The report generator can be tested by running the test.sh script:
