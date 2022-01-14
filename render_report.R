@@ -39,9 +39,9 @@ methodsTEXT <- config$methods.text
 
 ## get sample table
 if(grepl(".tsv", argv$sampletable)){
-  sampleDF <- read.csv2(argv$sampletable,sep='\t')
+  sampleDF <- read.csv2(argv$sampletable,sep='\t',check.names = F)
 } else if(grepl(".csv", argv$sampletable)) {
-  sampleDF <- read.csv2(argv$sampletable,sep=',')
+  sampleDF <- read.csv2(argv$sampletable,sep=',',check.names = F)
 } else {
   print('Sample table must be in csv/tsv format with a .tsv or .csv extension.')
   quit(save="no", status=1)
@@ -50,9 +50,9 @@ if(grepl(".tsv", argv$sampletable)){
 ## get optional heatmap
 if(!is.na(argv$snpmatrix)){
   if(grepl(".tsv", argv$snpmatrix)){
-    snpData <- read.csv2(argv$snpmatrix,sep='\t')
+    snpData <- read.csv2(argv$snpmatrix,sep='\t',check.names = F,row.names = 1)
   } else if(grepl(".csv", argv$snpmatrix)) {
-    snpData <- read.csv2(argv$snpmatrix,sep=',')
+    snpData <- read.csv2(argv$snpmatrix,sep=',',check.names = F,row.names = 1)
   } else {
     print('SNP data must be in csv/tsv format with a .tsv or .csv extension.')
     quit(save="no", status=1)
@@ -72,9 +72,9 @@ if(!is.na(argv$cgstats)){
 ## get optional ar-summary
 if(!is.na(argv$artable)){
   if(grepl(".tsv", argv$artable)){
-    ar_summary <- read.csv2(argv$artable,sep='\t')
+    ar_summary <- read.csv2(argv$artable,sep='\t',check.names = F)
   } else if(grepl(".csv", argv$artable)) {
-    ar_summary <- read.csv2(argv$artable,sep=',')
+    ar_summary <- read.csv2(argv$artable,sep=',',check.names = F)
   } else {
     print('AR data must be in csv/tsv format with a .tsv or .csv extension.')
     quit(save="no", status=1)
