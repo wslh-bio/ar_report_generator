@@ -58,9 +58,9 @@ Adding the -t option with a phylogenetic tree in newick format will plot a tree 
 Rscript render_report.R -t test_data/core_genome.tree 'Project Name' 'Report Preparer' test_data/samples.csv ar_report_config.yaml
 ```
 
-Adding the -c option with core genome statistics from the output of [Roary](https://sanger-pathogens.github.io/Roary/) will add a table of those statistics to the report:
+Adding the -c option with core genome statistics from the output of [Roary](https://sanger-pathogens.github.io/Roary/) will add a table of those statistics to the tree section of the report:
 ```
-Rscript render_report.R -c test_data/core_genome_statistics.txt 'Project Name' 'Report Preparer' test_data/samples.csv ar_report_config.yaml
+Rscript render_report.R -t test_data/core_genome.tree -c test_data/core_genome_statistics.txt 'Project Name' 'Report Preparer' test_data/samples.csv ar_report_config.yaml
 ```
 
 Adding the -a option with a table of AR genes in csv/tsv format will add a table of those genes to the report:
