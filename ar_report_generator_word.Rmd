@@ -99,22 +99,14 @@ ft %>% autofit(part = "all") %>% fit_to_width(8)
 ```{r samples}
 
 # create table
-colnames(sampleDF) <- c("Lab ID", "Isolate Collection Date", "Local ID", "Species ID", "Specimen Source","MLST", "Resistance Genes", "Comments","TreeGroup")
+colnames(sampleDF) <- c("Lab ID", "Isolate Collection Date", "Local ID", "Species ID", "Specimen Source","MLST", "Resistance Genes", "Comments","Tree Group")
 
-# plot table
-#ft <- flextable(sampleDF) %>% set_table_properties(layout = "autofit")
-#ftt <- FitFlextableToPage(ft)
-#ft
-#ft %>% autofit(part = "all") %>% fit_to_width(8)
 sample_ht <- as_hux(sampleDF)
 
 sample_ht <- sample_ht %>%
       set_all_padding(1) %>%
-#      set_outer_padding(0) %>%
       set_number_format(0) %>%
       set_bold(row = 1, col = everywhere) %>%
-#      set_bottom_border(row = 2, col = everywhere) %>%
-#      set_width(1) %>%
       set_background_color(evens, everywhere, "grey95")
 
 ft <- as_flextable(sample_ht)
@@ -122,9 +114,7 @@ ft %>% autofit(part = "all") %>% fit_to_width(7)
 
 ```
 
-
-\newpage
-
+`r if(exists('snpData') | exists('treepath')){"\\newpage"}`
 
 `r if(exists('snpData') | exists('treepath')){"# RELATEDNESS"}`
 
@@ -134,8 +124,6 @@ ft %>% autofit(part = "all") %>% fit_to_width(7)
 
 ```{r heatmap, fig.width=7, fig.height=5}
 if(exists('snpData') && config$show.snp==TRUE){
-  rownames(snpData) <- snpData$X
-  snpData <- snpData [,-1]
   fig <- heatmaply(snpData,
             cellnote = snpData,
             cellnote_textposition = "middle center",
@@ -148,8 +136,6 @@ if(exists('snpData') && config$show.snp==TRUE){
 }
 
 if(exists('snpData') && config$show.snp==FALSE){
-  rownames(snpData) <- snpData$X
-  snpData <- snpData [,-1]
   fig <- heatmaply(snpData,
             colors = viridis(n = 256, alpha = 1, begin = 1, end = 0, option = "viridis"),
             show_dendrogram = c(FALSE, FALSE),
@@ -161,10 +147,7 @@ if(exists('snpData') && config$show.snp==FALSE){
 
 ```
 
-
-\newpage
-
-
+`r if(exists('snpData') & exists('treepath')){"\\newpage"}`
 `r if(exists('treepath')){"## PHYLOGENETIC TREE"}`
 
 `r if(exists('treepath')){ftext(config$tree.text,prop = text_format)}`
@@ -215,6 +198,16 @@ if(exists('treepath')){
   dat <- tibble::tibble(id = id)
   # plot tree
   ggtree_plot <- ggtree(tree)
+  
+  log10_ceiling <- function(x) {
+    10^(ceiling(log10(x)))
+    }
+  
+  xmax <- max(ggtree_plot$data$x) + (log10_ceiling(max(ggtree_plot$data$x))/5)
+  xmin <- 0
+  
+  ggtree_plot <- ggtree_plot + xlim(xmin,xmax)
+  
   metat <- ggtree_plot$data %>%
     dplyr::inner_join(dat, c('label' = 'id'))
 
@@ -237,7 +230,7 @@ if(exists('treepath')){
   }
 
   tl <- d[d$isTip,]
-  ggtree_plot <- ggtree_plot + geom_text(data=tl,aes(label=label), nudge_x = 0.0002)
+  ggtree_plot <- ggtree_plot + geom_text(data=tl,aes(label=label), nudge_x = 0.001)
 
   fig <- ggplotly(ggtree_plot, tooltip = "text")
   plotly::save_image(fig, "tree-plot.png", width = 7, height = 5)
@@ -246,11 +239,9 @@ if(exists('treepath')){
 }
 ```
 
-\newpage
 
-
+`r if(exists('ar_summary')){"\\newgame"}`
 `r if(exists('ar_summary')){"# AR GENE SUMMARY"}`
-
 `r if(exists('ar_summary')){ftext(config$ar_gene_summary.text,prop = text_format)}`
 
 
@@ -271,8 +262,7 @@ if(exists('ar_summary')){
 }
 ```
 
-\newpage
-
+`r if(exists('optionalData')){"\\newpage"}`
 `r if(exists('optionalData')){"# ADDITIONAL ANALYSES"}`
 `r if(exists('optionalData')){ftext(config$optionaldata.text,prop = text_format)}`
 
