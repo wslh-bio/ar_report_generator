@@ -86,9 +86,9 @@ if(!is.na(argv$additionaldatatables)){
   optionalData <- list()
   for (df_path in argv$additionaldatatables){
     if(grepl(".tsv", df_path)){
-      df <- read.csv2(df_path,sep='\t')
+      df <- read.csv2(df_path,sep='\t',check.names = F)
     } else if(grepl(".csv", df_path)) {
-      df <- read.csv2(df_path,sep=',')
+      df <- read.csv2(df_path,sep=',',check.names = F)
     } else {
       print('Additional data must be in csv/tsv format with a .tsv or .csv extension.')
       quit(save="no", status=1)
