@@ -123,7 +123,7 @@ pander(headerDF)
 ```{r samples}
 
 # create table
-colnames(sampleDF) <- c("Lab ID", "Isolate Collection Date", "Local ID", "Species ID", "Specimen Source", "MLST", "Resistance Genes", "Comments","TreeGroup")
+colnames(sampleDF) <- c("Lab ID", "Isolate Collection Date", "Local ID", "Species ID", "Specimen Source", "MLST", "Resistance Genes", "Comments","Tree Group")
 # plot table
 kbl(sampleDF[,1:8]) %>%
   kable_styling(bootstrap_options = c("hover", "condensed", "responsive"),
@@ -138,8 +138,6 @@ kbl(sampleDF[,1:8]) %>%
 <center>
 ```{r heatmap}
 if(exists('snpData') && config$show.snp==TRUE){
-  rownames(snpData) <- snpData$X
-  snpData <- snpData [,-1]
   heatmaply(snpData,
             cellnote=snpData,
             cellnote_textposition = "middle center",
