@@ -123,7 +123,7 @@ pander(headerDF)
 ```{r samples}
 
 # create table
-colnames(sampleDF) <- c("Lab ID", "Isolate Collection Date", "Local ID", "Species ID", "Specimen Source", "MLST", "Resistance Genes", "Comments","Tree Group")
+colnames(sampleDF) <- c("Lab ID", "Isolate Collection Date", "Local ID", "Species ID", "Specimen Source", "MLST", "Resistance Genes", "Comments","Group")
 # plot table
 kbl(sampleDF[,1:8]) %>%
   kable_styling(bootstrap_options = c("hover", "condensed", "responsive"),
@@ -137,6 +137,7 @@ kbl(sampleDF[,1:8]) %>%
 `r if(exists('snpData')){config$heatmap.text}`
 <center>
 ```{r heatmap}
+
 if(exists('snpData') && config$show.snp==TRUE){
   heatmaply(snpData,
             cellnote=snpData,
@@ -147,8 +148,6 @@ if(exists('snpData') && config$show.snp==TRUE){
 }
 
 if(exists('snpData') && config$show.snp==FALSE){
-  rownames(snpData) <- snpData$X
-  snpData <- snpData [,-1]
   heatmaply(snpData,
             colors = viridis(n = 256, alpha = 1, begin = 1, end = 0, option = "viridis"),
             show_dendrogram = c(FALSE, FALSE),
@@ -194,10 +193,10 @@ if(exists('treepath')){
   id <- tree$tip.label
 
   # group samples if we have a grouping catagory
-  if(any(!is.na(sampleDF$TreeGroup))){
+  if(any(!is.na(sampleDF$Group))){
     #reorder sampleDF
     orderedDF <- sampleDF[match(id,sampleDF$'Lab ID'),]
-    grp <- orderedDF$TreeGroup
+    grp <- orderedDF$Group
   }
   else {
     grp <- NULL
@@ -214,7 +213,8 @@ if(exists('treepath')){
                aes(x = x,
                    y = y,
                    colour = grp,
-                   label = id, text = paste0(id)),show.legend = FALSE)
+                   label = id, text = paste(id,
+                                sep = "\n")),show.legend = FALSE)
 
 
   if(config$show.bootstrap){
